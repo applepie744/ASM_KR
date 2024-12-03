@@ -3,8 +3,9 @@
     .stack 100h
     .data
 res_name        db  'result.txt', 0
-register_line   db  'axcxdxbxspbpsidi, ', 0
-command_line    db  'BTC JUMP DAS', 13, 10
+register_line   db  'eaxcxdxbxspbpsidi, ', 0
+command_line    db  'BTC JMP DAS', 13, 10
+support_line    db  '[*2*4*8+-]', 13, 10
 file_name       db  'com.com'
 len             dw  0,0
     .data?
@@ -15,7 +16,7 @@ start:
         mov     ax, @data
         mov     ds, ax
         
-        mov     ah,3Dh            
+        mov     ax,3D00h                
         mov     dx,offset file_name
         int     21h 
         
@@ -52,12 +53,14 @@ while:
         mov     sp, 0100h
 after_exp:
         lodsb  
+        or      al, al                      ;;;;;;;;;;;;;;;;;;;;;;;;; optional string
+        jz      exit                        ;;;;;;;;;;;;;;;;;;;;;;;;; optional string
         cmp     al, 2Fh
         jne     exp_check_reg
         mov     ah, 40h
         mov     cx, 5
         mov     bx, [descr]
-        mov     dx, offset [command_line+9]
+        mov     dx, offset [command_line+8]
         int     21h
         jmp     while
 exit:
@@ -72,7 +75,7 @@ exp_check_reg:
 exp_check_67:
         cmp     al, 67h
         jne     segment_check
-        push    65h
+        push    67h
         jmp     after_exp
 dop_check:
         cmp     al, 0Fh
@@ -80,8 +83,6 @@ dop_check:
         mov     bl, al
         xor     bl, 70h
         js      jmp_check
-        cmp     al, 12h           ;;;;;;;;;;optional string
-        je      exit              ;;;;;;;;;;optional string
         push    53h
 segment_check:
         cmp     al, 3Eh
@@ -110,8 +111,6 @@ seg_36:
          push   53h
          jmp    after_exp
 btc_check:
-        cmp     al, 0Fh
-        jne     jmp_check
         mov     ah, 40h
         mov     cx, 4
         mov     bx, [descr]
@@ -121,31 +120,187 @@ btc_check:
         xor     al, 0BBh
         jnz     exit                                  ;work with rm16/imm8 (rm32/imm8)    /BTC                                        
         lodsb
-        cmp     al, 0C0h
-        jl      btc_register_op                       ; + JLE and delete "AX, AX -version
-        jg      exit                                  ; work with mem
-        jmp     tab
+        sal     al, 1                             
+        jns     st_work_mem
+        jc      register_exp                      
+st_work_mem:
+        pop     ax
+        pop     bx
+        pop     cx
+        pop     dx
+        mov     sp, 100h
+        cmp     cx, 53h
+        je      wr_seg_cx
+        cmp     bx, 53h
+        je      wr_seg_bx
+        push    bx
+        push    ax
+        jmp     skobka
+wr_seg_cx:
+        cmp     dx, 65h
+        jne     next_push1
+        push    dx
+        jmp     next_push2
+next_push1:
+        cmp     ax, 65h
+        jne     next_push2
+        push    ax
+        jmp     exitt_push
+next_push2:
+        cmp     ax, 67h
+        jne     exitt_push
+        push    ax
+exitt_push:
+        mov     [len], bx
+        jmp     wr_seg    
+wr_seg_bx:
+        cmp     cx, 65h
+        jne     l
+        push    cx
+l:
+        mov     [len], ax
+wr_seg:        
+        mov     bx, [descr]
+        mov     dx, offset [len]
+        mov     ah, 40h
+        mov     cx, 1
+        int     21h
+        mov     [len], 53h
+        mov     ah, 40h
+        int     21h
+        mov     [len], 3Ah
+        mov     ah, 40h
+        int     21h
+skobka:
+        mov     ah, 40h                                
+        mov     cx, 1
+        mov     bx, [descr]
+        mov     dx, offset support_line
+        int     21h
+        mov     bp, 00FFh
+        pop     ax
+        push    ax
+        cmp     ax, 67h
+        je      exp
+        jmp     operand_mem        
 tab:
+        xor     bp, bp
         mov     ah, 40h
         mov     cx, 2
-        mov     dx, offset [command_line+12]
+        mov     dx, offset [command_line+11]
         int     21h
         jmp     while                     
 jmp_check:
         cmp     al, 12h                     ;;;;;;;;;;;;;;;;;;;;;;;;; optional string
         je      exit                        ;;;;;;;;;;;;;;;;;;;;;;;;; optional string
-        or      al, al                      ;;;;;;;;;;;;;;;;;;;;;;;;; optional string
-        jz      exit                        ;;;;;;;;;;;;;;;;;;;;;;;;; optional string
         mov     ah, 40h
         mov     cx, 4
         mov     bx, [descr]
         mov     dx, offset command_line+4
         int     21h
         lodsb
-        cmp     al, 0e0h                    ;;;;;;;;;;;;;;;;;;;;;;;;; optional string
-        jne     exit                        ;;;;;;;;;;;;;;;;;;;;;;;;; optional string
-        jmp     tab                         ; continuation of the branch        \JUMP
-btc_register_op:        
-             
-        jmp     while  
+        mov     bp, 3           
+register_exp:        
+        pop     dx
+        push    dx
+        cmp     dl, 65h
+        jne     operand_check 
+exp:        
+        mov     dx, offset register_line
+        mov     ah, 40h
+        mov     cx, 1
+        mov     bx, [descr]
+        int     21h
+        cmp     bp, 00FFh
+        je      operand_mem0                                 
+operand_check:
+        dec     si
+        lodsb
+        cmp     bp, 3
+        jz      jj
+        or      bp, bp
+        jnz     operand_2
+        xor     bp, bp
+jj: 
+        shrd    dx, ax, 4
+        jns     op1_other_zn
+        btr     dx, 15
+op1_other_zn:
+        or      dh, dh
+        jz      op_ax
+        cmp     dh, 40h
+        jl      op1_l
+        je      op2_sp
+        cmp     dh, 60h
+        jl      op_bp
+        je      op_si   
+op2_di:
+        mov     dx, offset register_line+15
+        jmp     write_op
+op1_l:
+        cmp     dh, 20h
+        jl      op_cx
+        cmp     dh, 30h
+        jge     op_bx
+op2_dx:
+        mov     dx, offset register_line+5
+        jmp     write_op     
+op_ax:
+        mov     dx, offset register_line+1
+        jmp     write_op         
+op2_l:
+        cmp     al, 0C8h
+        jl      op_ax
+        cmp     al, 0D0h
+        jge     op2_dx
+op_cx:
+        mov     dx, offset register_line+3
+        jmp     write_op
+op2_rr:
+        cmp     al, 0E8h
+        jge     op_bp
+        cmp     al ,0e0h
+        jl      op_bx
+op2_sp:
+        mov     dx, offset register_line+9
+        jmp     write_op
+op_bp:
+        mov     dx, offset register_line+11
+        jmp     write_op
+operand_2:
+        cmp     al, 0D8h
+        jl      op2_l
+        je      op_bx
+        cmp     al, 0F0h
+        jl      op2_rr
+        cmp     al, 0F8h
+        jge     op2_di
+op_si:
+        mov     dx, offset register_line+13
+        jmp     write_op
+op_bx:
+        mov     dx, offset register_line+7
+        jmp     write_op
+write_op:
+        mov     cx, 2
+        mov     ah, 40h
+        int     21h
+        inc     bp
+        cmp     bp, 2
+        jge     tab       
+        mov     ah, 40h
+        mov     dx, offset register_line+17
+        int     21h
+        jmp     register_exp
+operand_mem0:
+        xor     bp, bp
+operand_mem:
+        dec     si
+        lodsb
+        rcl     ax, 1
+        js      tab                         ;mod    01
+        jc      tab                         ;mod    10
+                                            ;mod    00
+        
+        jmp     tab
 end start
