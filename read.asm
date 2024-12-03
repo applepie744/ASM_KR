@@ -177,8 +177,9 @@ skobka:
         pop     ax
         push    ax
         cmp     ax, 67h
-        je      exp
-        jmp     operand_mem        
+        jne     operand_mem
+        call    exp
+        jmp     operand_mem
 tab:
         xor     bp, bp
         mov     cx, 2
@@ -196,14 +197,17 @@ register_exp:
         pop     dx
         push    dx
         cmp     dl, 65h
-        jne     operand_check 
+        jne     operand_check
+        call    exp 
+        jmp     operand_check
 exp:        
         mov     dx, offset register_line
         mov     cx, 1
         mov     bx, [descr]
         call    file_write_proc
         cmp     bp, 00FFh
-        je      operand_mem0                                 
+        je      operand_mem0
+        ret
 operand_check:
         dec     si
         lodsb
@@ -286,10 +290,12 @@ operand_mem0:
 operand_mem:
         dec     si
         lodsb
-        rcl     ax, 1
+        sal     al, 1
         js      tab                         ;mod    01
         jc      tab                         ;mod    10
-                                            ;mod    00
+        
+        sar     al, 1                       ;mod    00
+        
         
         jmp     tab
 file_write_proc:
