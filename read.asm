@@ -13,7 +13,7 @@ buff            db  1234  dup(?)
     .code
 start: 
         mov     ax, @data
-        mov     ds, ax
+        mov     ds, ax  
         
         mov     ah,3Dh            
         mov     dx,offset file_name
