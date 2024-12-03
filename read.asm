@@ -57,11 +57,10 @@ after_exp:
         jz      exit                        ;;;;;;;;;;;;;;;;;;;;;;;;; optional string
         cmp     al, 2Fh
         jne     exp_check_reg
-        mov     ah, 40h
         mov     cx, 5
         mov     bx, [descr]
         mov     dx, offset [command_line+8]
-        int     21h
+        call    file_write_proc
         jmp     while
 exit:
         mov     ah, 4ch
@@ -111,11 +110,10 @@ seg_36:
          push   53h
          jmp    after_exp
 btc_check:
-        mov     ah, 40h
         mov     cx, 4
         mov     bx, [descr]
         mov     dx, offset command_line
-        int     21h
+        call    file_write_proc
         lodsb
         xor     al, 0BBh
         jnz     exit                                  ;work with rm16/imm8 (rm32/imm8)    /BTC                                        
@@ -162,21 +160,17 @@ l:
 wr_seg:        
         mov     bx, [descr]
         mov     dx, offset [len]
-        mov     ah, 40h
         mov     cx, 1
-        int     21h
+        call    file_write_proc
         mov     [len], 53h
-        mov     ah, 40h
-        int     21h
+        call    file_write_proc
         mov     [len], 3Ah
-        mov     ah, 40h
-        int     21h
-skobka:
-        mov     ah, 40h                                
+        call    file_write_proc
+skobka:                              
         mov     cx, 1
         mov     bx, [descr]
         mov     dx, offset support_line
-        int     21h
+        call    file_write_proc
         mov     bp, 00FFh
         pop     ax
         push    ax
@@ -185,19 +179,17 @@ skobka:
         jmp     operand_mem        
 tab:
         xor     bp, bp
-        mov     ah, 40h
         mov     cx, 2
         mov     dx, offset [command_line+11]
-        int     21h
+        call    file_write_proc
         jmp     while                     
 jmp_check:
         cmp     al, 12h                     ;;;;;;;;;;;;;;;;;;;;;;;;; optional string
         je      exit                        ;;;;;;;;;;;;;;;;;;;;;;;;; optional string
-        mov     ah, 40h
         mov     cx, 4
         mov     bx, [descr]
         mov     dx, offset command_line+4
-        int     21h
+        call    file_write_proc
         lodsb
         mov     bp, 3           
 register_exp:        
@@ -207,10 +199,9 @@ register_exp:
         jne     operand_check 
 exp:        
         mov     dx, offset register_line
-        mov     ah, 40h
         mov     cx, 1
         mov     bx, [descr]
-        int     21h
+        call    file_write_proc
         cmp     bp, 00FFh
         je      operand_mem0                                 
 operand_check:
@@ -283,14 +274,12 @@ op_bx:
         jmp     write_op
 write_op:
         mov     cx, 2
-        mov     ah, 40h
-        int     21h
+        call    file_write_proc
         inc     bp
         cmp     bp, 2
         jge     tab       
-        mov     ah, 40h
         mov     dx, offset register_line+17
-        int     21h
+        call    file_write_proc
         jmp     register_exp
 operand_mem0:
         xor     bp, bp
@@ -303,4 +292,8 @@ operand_mem:
                                             ;mod    00
         
         jmp     tab
+file_write_proc:
+        mov     ah, 40h
+        int     21h
+        ret
 end start
