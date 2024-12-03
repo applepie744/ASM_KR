@@ -53,8 +53,8 @@ while:
         mov     sp, 0100h
 after_exp:
         lodsb  
-        or      al, al                      ;;;;;;;;;;;;;;;;;;;;;;;;; optional string
-        jz      exit                        ;;;;;;;;;;;;;;;;;;;;;;;;; optional string
+        or      al, al                      
+        jz      exit                        
         cmp     al, 2Fh
         jne     exp_check_reg
         mov     cx, 5
@@ -122,6 +122,8 @@ btc_check:
         jns     st_work_mem
         jc      register_exp                      
 st_work_mem:
+        cmp     sp, 100h
+        je      skobka
         pop     ax
         pop     bx
         pop     cx
