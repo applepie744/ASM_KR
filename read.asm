@@ -7,7 +7,7 @@ register_line   db  'eaxcxdxbxspbpsidi, ', 0
 command_line    db  'BTC JMP DAS', 13, 10
 support_line    db  '[*2*4*8+-]', 13, 10
 file_name       db  'com.com'
-len             dw  0,0
+len             dw  ?
     .data?
 descr           dw  ?
 buff            db  1234  dup(?)
@@ -26,8 +26,8 @@ start:
         xor     dx, dx
         int     21h
         
-        mov     len, ax
-        mov     len+2, dx               
+        sub     ax, 3
+        mov     len, ax           
     
         mov     AX, 4200h 
         xor     DX, DX 
@@ -184,8 +184,6 @@ tab:
         call    file_write_proc
         jmp     while                     
 jmp_check:
-        cmp     al, 12h                     ;;;;;;;;;;;;;;;;;;;;;;;;; optional string
-        je      exit                        ;;;;;;;;;;;;;;;;;;;;;;;;; optional string
         mov     cx, 4
         mov     bx, [descr]
         mov     dx, offset command_line+4
