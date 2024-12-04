@@ -343,10 +343,6 @@ operand_mem:
         js      tab                         ;mod    01
         jc      tab                         ;mod    10
                                   ;mod    00
-        mov     di, ax                          
-        bsf     dx, ax 
-        cmp     dx, 4
-        jnz     q
         call    op_bx
         mov     cx, 2
         call    file_write_proc
