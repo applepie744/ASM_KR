@@ -125,6 +125,8 @@ st_work_mem:
         cmp     sp, 100h
         je      skobka
         pop     ax
+        cmp     sp, 100h
+        je      er
         pop     bx
         pop     cx
         pop     dx
@@ -134,6 +136,7 @@ st_work_mem:
         cmp     bx, 53h
         je      wr_seg_bx
         push    bx
+er:
         push    ax
         jmp     skobka
 wr_seg_cx:
@@ -177,9 +180,8 @@ skobka:
         pop     ax
         push    ax
         cmp     ax, 67h
-        jne     operand_mem
-        call    exp
-        jmp     operand_mem
+        je      exp
+        jmp     operand_mem        
 tab:
         xor     bp, bp
         mov     cx, 2
@@ -197,17 +199,14 @@ register_exp:
         pop     dx
         push    dx
         cmp     dl, 65h
-        jne     operand_check
-        call    exp 
-        jmp     operand_check
+        jne     operand_check 
 exp:        
         mov     dx, offset register_line
         mov     cx, 1
         mov     bx, [descr]
         call    file_write_proc
         cmp     bp, 00FFh
-        je      operand_mem0
-        ret
+        je      operand_mem0                                 
 operand_check:
         dec     si
         lodsb
@@ -222,63 +221,110 @@ jj:
         btr     dx, 15
 op1_other_zn:
         or      dh, dh
-        jz      op_ax
+        jnz     a1
+        call    op_ax
+        jmp     write_op
+a1:
         cmp     dh, 40h
         jl      op1_l
-        je      op2_sp
+        jne     s1
+        call    op_sp
+        jmp     write_op
+s1:
         cmp     dh, 60h
-        jl      op_bp
-        je      op_si   
-op2_di:
-        mov     dx, offset register_line+15
+        jge     b1
+        call    op_bp
+        jmp     write_op
+b1:
+        jne     s2
+        call    op_si
+        jmp     write_op
+s2:  
+        call    op_di
         jmp     write_op
 op1_l:
         cmp     dh, 20h
-        jl      op_cx
+        jge     c1
+        call    op_cx
+        jmp     write_op
+c1:
         cmp     dh, 30h
-        jge     op_bx
-op2_dx:
-        mov     dx, offset register_line+5
-        jmp     write_op     
-op_ax:
-        mov     dx, offset register_line+1
-        jmp     write_op         
+        jl      b2
+        call    op_bx
+        jmp     write_op
+b2:
+        call    op_dx
+        jmp     write_op       
 op2_l:
         cmp     al, 0C8h
-        jl      op_ax
+        jge     a2
+        call    op_ax
+        jmp     write_op
+a2:
         cmp     al, 0D0h
-        jge     op2_dx
-op_cx:
-        mov     dx, offset register_line+3
+        jl      d2
+        call    op_dx
+        jmp     write_op
+d2:
+        call    op_cx
         jmp     write_op
 op2_rr:
         cmp     al, 0E8h
-        jge     op_bp
-        cmp     al ,0e0h
-        jl      op_bx
-op2_sp:
-        mov     dx, offset register_line+9
+        jl      b3
+        call    op_bp
         jmp     write_op
-op_bp:
-        mov     dx, offset register_line+11
+b3:
+        cmp     al ,0e0h
+        jge     b4
+        call    op_bx
+        jmp     write_op
+b4:  
+        call    op_sp
         jmp     write_op
 operand_2:
         cmp     al, 0D8h
         jl      op2_l
-        je      op_bx
+        jne     b5
+        call    op_bx
+        jmp     write_op
+b5:
         cmp     al, 0F0h
         jl      op2_rr
         cmp     al, 0F8h
-        jge     op2_di
-op_si:
-        mov     dx, offset register_line+13
+        jl      d3
+        call    op_di
         jmp     write_op
+d3:
+        call    op_si
+        jmp     write_op   
+op_ax:
+        mov     dx, offset register_line+1
+        ret  
+op_cx:
+        mov     dx, offset register_line+3
+        ret
+op_dx:
+        mov     dx, offset register_line+5
+        ret         
 op_bx:
         mov     dx, offset register_line+7
-        jmp     write_op
+        ret
+op_sp:
+        mov     dx, offset register_line+9
+        ret
+op_bp:
+        mov     dx, offset register_line+11
+        ret
+op_si:
+        mov     dx, offset register_line+13
+        ret
+op_di:
+        mov     dx, offset register_line+15
+        ret
 write_op:
         mov     cx, 2
         call    file_write_proc
+mee:
         inc     bp
         cmp     bp, 2
         jge     tab       
@@ -293,10 +339,25 @@ operand_mem:
         sal     al, 1
         js      tab                         ;mod    01
         jc      tab                         ;mod    10
-        
-        sar     al, 1                       ;mod    00
-        
-        
+                                  ;mod    00
+        mov     di, ax                          
+        bsf     dx, ax                        
+        jnz     q
+        call    op_bx
+        mov     cx, 2
+        call    file_write_proc
+        dec     cx
+        mov     dx, offset support_line+7
+        call    file_write_proc  
+        inc     cx
+        call    op_si
+        call    file_write_proc
+        dec     cx
+        mov     dx, offset support_line+9
+        call    file_write_proc
+        xor     bp, bp
+        jmp     mee
+q:
         jmp     tab
 file_write_proc:
         mov     ah, 40h
