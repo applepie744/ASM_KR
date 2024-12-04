@@ -1,4 +1,4 @@
-    .model small
+.model small
     .486
     .stack 100h
     .data
@@ -128,11 +128,14 @@ st_work_mem:
         cmp     sp, 100h
         je      er
         pop     bx
+        cmp     sp, 100h
+        je      che
         pop     cx
         pop     dx
         mov     sp, 100h
         cmp     cx, 53h
         je      wr_seg_cx
+che:
         cmp     bx, 53h
         je      wr_seg_bx
         push    bx
@@ -341,7 +344,8 @@ operand_mem:
         jc      tab                         ;mod    10
                                   ;mod    00
         mov     di, ax                          
-        bsf     dx, ax                        
+        bsf     dx, ax 
+        cmp     dx, 4
         jnz     q
         call    op_bx
         mov     cx, 2
