@@ -169,14 +169,14 @@ start:
         BTC     dword ptr [si], esi
         BTC     dword ptr [si], edi
         
-                BTC     word ptr [si], ax
-        BTC     word ptr [si], cx
-        BTC     word ptr [si], dx
-        BTC     word ptr [si], bx
-        BTC     word ptr [si], sp
-        BTC     word ptr [si], bp
-        BTC     word ptr [si], si
-        BTC     word ptr [si], di
+        BTC     word ptr [di], ax
+        BTC     word ptr [di], cx
+        BTC     word ptr [di], dx
+        BTC     word ptr [di], bx
+        BTC     word ptr [di], sp
+        BTC     word ptr [di], bp
+        BTC     word ptr [di], si
+        BTC     word ptr [di], di
         
         BTC     dword ptr [di], eax
         BTC     dword ptr [di], ecx
@@ -187,14 +187,14 @@ start:
         BTC     dword ptr [di], esi
         BTC     dword ptr [di], edi
         
-                BTC     word ptr [si], ax
-        BTC     word ptr [si], cx
-        BTC     word ptr [si], dx
-        BTC     word ptr [si], bx
-        BTC     word ptr [si], sp
-        BTC     word ptr [si], bp
-        BTC     word ptr [si], si
-        BTC     word ptr [si], di
+        BTC     word ptr [bx], ax
+        BTC     word ptr [bx], cx
+        BTC     word ptr [bx], dx
+        BTC     word ptr [bx], bx
+        BTC     word ptr [bx], sp
+        BTC     word ptr [bx], bp
+        BTC     word ptr [bx], si
+        BTC     word ptr [bx], di
         
         BTC     dword ptr [bx], eax
         BTC     dword ptr [bx], ecx
