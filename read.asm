@@ -119,7 +119,8 @@ btc_check:
         call    file_write_proc
         lodsb
         xor     al, 0BBh
-        jnz     exit                                  ;work with rm16/imm8 (rm32/imm8)    /BTC                                        
+        jnz     exit                                  ;work with rm16/imm8 (rm32/imm8)    /BTC
+reg_or_mem:        
         lodsb
         sal     al, 1                             
         jns     st_work_mem
@@ -200,7 +201,6 @@ skobka:
         mov     bx, [descr]
         mov     dx, offset support_line
         call    file_write_proc
-        mov     bp, 00FFh
         pop     ax
         push    ax
         cmp     ax, 67h
@@ -217,8 +217,13 @@ jmp_check:
         mov     bx, [descr]
         mov     dx, offset command_line+4
         call    file_write_proc
+        dec     si
         lodsb
-        mov     bp, 3           
+        cmp     al, 0FFh
+        jne     tab; EB/EA/E9 
+        mov     bp, 3
+        jmp     reg_or_mem
+        
 register_exp:        
         pop     dx
         push    dx
@@ -413,7 +418,10 @@ close_skobka:
         mov     cx, 1
         mov     dx, offset support_line+9
         call    file_write_proc
+        cmp     bp, 3
+        je      i
         xor     bp, bp
+i:
         jmp     mee
         
 

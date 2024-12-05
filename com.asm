@@ -151,12 +151,12 @@ start:
         BTC     edi, esi
         BTC     edi, edi
         
-        BTC     word ptr [si], ax
-        BTC     word ptr [si], cx
-        BTC     word ptr [si], dx
-        BTC     word ptr [si], bx
-        BTC     word ptr [si], sp
-        BTC     word ptr [si], bp
+        BTC     word ptr ds:[si], ax
+        BTC     word ptr ss:[si], cx
+        BTC     word ptr cs:[si], dx
+        BTC     word ptr es:[si], bx
+        BTC     word ptr fs:[si], sp
+        BTC     word ptr gs:[si], bp
         BTC     word ptr [si], si
         BTC     word ptr [si], di
         
@@ -223,5 +223,8 @@ start:
         JMP     esi
         JMP     edi
         
+        JMP     [bx]
+        JMP     gs:[si]
+        JMP     [di]        
         DAS
 end start
