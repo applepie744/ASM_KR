@@ -151,23 +151,59 @@ start:
         BTC     edi, esi
         BTC     edi, edi
         
-        BTC     word ptr [bx+si], ax
-        BTC     word ptr [bx+si], cx
-        BTC     word ptr [bx+si], dx
-        BTC     word ptr [bx+si], bx
-        BTC     word ptr [bx+si], sp
-        BTC     word ptr [bx+si], bp
-        BTC     word ptr [bx+si], si
-        BTC     word ptr [bx+si], di
+        BTC     word ptr [si], ax
+        BTC     word ptr [si], cx
+        BTC     word ptr [si], dx
+        BTC     word ptr [si], bx
+        BTC     word ptr [si], sp
+        BTC     word ptr [si], bp
+        BTC     word ptr [si], si
+        BTC     word ptr [si], di
         
-        BTC     dword ptr [bx+si], eax
-        BTC     dword ptr [bx+si], ecx
-        BTC     dword ptr [bx+si], edx
-        BTC     dword ptr [bx+si], ebx
-        BTC     dword ptr [bx+si], esp
-        BTC     dword ptr [bx+si], ebp
-        BTC     dword ptr [bx+si], esi
-        BTC     dword ptr [bx+si], edi
+        BTC     dword ptr [si], eax
+        BTC     dword ptr [si], ecx
+        BTC     dword ptr [si], edx
+        BTC     dword ptr [si], ebx
+        BTC     dword ptr [si], esp
+        BTC     dword ptr [si], ebp
+        BTC     dword ptr [si], esi
+        BTC     dword ptr [si], edi
+        
+                BTC     word ptr [si], ax
+        BTC     word ptr [si], cx
+        BTC     word ptr [si], dx
+        BTC     word ptr [si], bx
+        BTC     word ptr [si], sp
+        BTC     word ptr [si], bp
+        BTC     word ptr [si], si
+        BTC     word ptr [si], di
+        
+        BTC     dword ptr [di], eax
+        BTC     dword ptr [di], ecx
+        BTC     dword ptr [di], edx
+        BTC     dword ptr [di], ebx
+        BTC     dword ptr [di], esp
+        BTC     dword ptr [di], ebp
+        BTC     dword ptr [di], esi
+        BTC     dword ptr [di], edi
+        
+                BTC     word ptr [si], ax
+        BTC     word ptr [si], cx
+        BTC     word ptr [si], dx
+        BTC     word ptr [si], bx
+        BTC     word ptr [si], sp
+        BTC     word ptr [si], bp
+        BTC     word ptr [si], si
+        BTC     word ptr [si], di
+        
+        BTC     dword ptr [bx], eax
+        BTC     dword ptr [bx], ecx
+        BTC     dword ptr [bx], edx
+        BTC     dword ptr [bx], ebx
+        BTC     dword ptr [bx], esp
+        BTC     dword ptr [bx], ebp
+        BTC     dword ptr [bx], esi
+        BTC     dword ptr [bx], edi
         
         JMP     ax
         JMP     cx

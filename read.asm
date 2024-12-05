@@ -364,23 +364,39 @@ operand_mem:
         sal     al, 1
         js      tab                         ;mod    01
         jc      tab                         ;mod    10
-                                  ;mod    00
-        call    op_bx
+                                            ;mod    00 
+        sal     al, 4
+        bt      ax, 7        
+        jc      no_sib
+        jmp     tab;maybe sib
+no_sib: 
         mov     cx, 2
-        call    file_write_proc
-        dec     cx
-        mov     dx, offset support_line+7
-        call    file_write_proc  
-        inc     cx
+        bt      ax, 6
+        jc      n_sib_bx_num
+        bt      ax, 5
+        jc      w_di9
         call    op_si
         call    file_write_proc
-        dec     cx
+        jmp     close_skobka
+w_di9:
+        call    op_di
+        call    file_write_proc
+        jmp     close_skobka
+n_sib_bx_num:
+        bt      ax, 5
+        jc      w_bx9
+        ;num
+        jmp     close_skobka
+w_bx9:
+        call    op_bx
+        call    file_write_proc
+        jmp     close_skobka
+close_skobka:
+        mov     cx, 1
         mov     dx, offset support_line+9
         call    file_write_proc
         xor     bp, bp
         jmp     mee
-q:
-        jmp     tab
         
 
 file_write_proc:
