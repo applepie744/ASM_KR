@@ -22,19 +22,18 @@ start:
         
         mov     bx, ax
         mov     ax, 4202h               
-        xor     cx, cx
         xor     dx, dx
         int     21h
         
         sub     ax, 3
-        mov     len, ax           
+        mov     di, ax           
     
         mov     AX, 4200h 
         xor     DX, DX 
         int     21h 
         
         mov     ah, 3Fh                 
-        mov     cx, len
+        mov     cx, di
         mov     DX, offset buff
         int     21h
         
@@ -382,6 +381,8 @@ operand_mem:
         jmp     mee
 q:
         jmp     tab
+        
+
 file_write_proc:
         mov     ah, 40h
         int     21h
