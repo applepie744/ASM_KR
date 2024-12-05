@@ -5,7 +5,7 @@
 res_name        db  'result.txt', 0
 register_line   db  'eaxcxdxbxspbpsidi, ', 0
 command_line    db  'BTC JMP DAS', 13, 10
-support_line    db  '[*2*4*8+-]', 13, 10
+support_line    db  '[*2*4*8+-]dword ptr ', 13, 10
 file_name       db  'com.com'
 len             dw  ?
     .data?
@@ -126,7 +126,7 @@ btc_check:
         jc      register_exp                      
 st_work_mem:
         cmp     sp, 100h
-        je      skobka
+        je      skobka0
         pop     ax
         cmp     sp, 100h
         je      er
@@ -142,9 +142,18 @@ che:
         cmp     bx, 53h
         je      wr_seg_bx
         push    bx
-er:
+er:     
+        cmp     ax, 65h
+        jne     p
         push    ax
-        jmp     skobka
+        mov     bx, [descr]
+        mov     cx, 1
+        mov     dx, offset support_line+10
+        call    file_write_proc
+        jmp     skobka0
+p: 
+        push    ax
+        jmp     skobka0
 wr_seg_cx:
         cmp     dx, 65h
         jne     next_push1
@@ -152,14 +161,14 @@ wr_seg_cx:
         jmp     next_push2
 next_push1:
         cmp     ax, 65h
-        jne     next_push2
+        jne     exitt_push;next_push2
         push    ax
         jmp     exitt_push
 next_push2:
         cmp     ax, 67h
         jne     exitt_push
         push    ax
-exitt_push:
+exitt_push: 
         mov     [len], bx
         jmp     wr_seg    
 wr_seg_bx:
@@ -170,12 +179,21 @@ l:
         mov     [len], ax
 wr_seg:        
         mov     bx, [descr]
+        mov     cx, 9
+        mov     dx, offset support_line+11
+        call    file_write_proc
         mov     dx, offset [len]
         mov     cx, 1
         call    file_write_proc
         mov     [len], 53h
         call    file_write_proc
         mov     [len], 3Ah
+        call    file_write_proc
+        jmp     skobka
+skobka0:
+        mov     bx, [descr]
+        mov     cx, 9
+        mov     dx, offset support_line+11
         call    file_write_proc
 skobka:                              
         mov     cx, 1
