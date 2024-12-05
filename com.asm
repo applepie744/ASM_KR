@@ -7,6 +7,7 @@ B dw 1234h
     org 100h   
 start:
 ;example      
+        BTC     ax, ax
         BTC     eax, eax
         BTC     ax, cx
         BTC     ax, dx
@@ -78,12 +79,22 @@ start:
         BTC     di, bp
         BTC     di, si
         BTC     di, di
-               
-        BTC     ds:[bx], ax
-        BTC     es:[bx+si], cx
-        BTC     ss:[bx+di], dx
-        BTC     fs:[si], bx
-        BTC     gs:[di], sp
-        BTC     [bp+si], bp
-        BTC     [bp+di], si
+        
+        BTC     word ptr [bx+si], ax
+        BTC     word ptr [bx+si], cx
+        BTC     word ptr [bx+si], dx
+        BTC     word ptr [bx+si], bx
+        BTC     word ptr [bx+si], sp
+        BTC     word ptr [bx+si], bp
+        BTC     word ptr [bx+si], si
+        BTC     word ptr [bx+si], di
+        
+        BTC     dword ptr [bx+si], eax
+        BTC     dword ptr [bx+si], ecx
+        BTC     dword ptr [bx+si], edx
+        BTC     dword ptr [bx+si], ebx
+        BTC     dword ptr [bx+si], esp
+        BTC     dword ptr [bx+si], ebp
+        BTC     dword ptr [bx+si], esi
+        BTC     dword ptr [bx+si], edi
 end start
