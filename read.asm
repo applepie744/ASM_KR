@@ -48,9 +48,13 @@ start:
         mov     bx, ax
         mov     [descr], ax
         
-        mov     SI, offset buff         
+        mov     SI, offset buff
+        jmp     after_exp
 while:
-        mov     sp, 0100h
+        pop    dx
+        pop    dx
+        pop    dx
+        mov    sp, 0100h
 after_exp:
         lodsb  
         or      al, al                      
@@ -258,11 +262,6 @@ c1:
 b2:
         call    op_dx
         jmp     write_op       
-op2_l:
-        cmp     al, 0C8h
-        jge     a2
-        call    op_ax
-        jmp     write_op
 a2:
         cmp     al, 0D0h
         jl      d2
@@ -271,31 +270,49 @@ a2:
 d2:
         call    op_cx
         jmp     write_op
-op2_rr:
-        cmp     al, 0E8h
-        jl      b3
-        call    op_bp
-        jmp     write_op
-b3:
-        cmp     al ,0e0h
-        jge     b4
-        call    op_bx
-        jmp     write_op
 b4:  
         call    op_sp
         jmp     write_op
 operand_2:
-        cmp     al, 0D8h
-        jl      op2_l
-        jne     b5
+        sar     ax, 3
+        btr     ax, 4
+        btr     ax, 3
+        bt      ax, 0
+        jc      continue3_1
+        bt      ax, 1
+        jnc     continue3_2
+        cmp     al, 2
+        je      w_dx
+        call    op_si
+        jmp     write_op
+w_dx:
+        call    op_dx
+        jmp     write_op
+continue3_2:
+        or      al, al
+        je      w_ax
+        call    op_sp
+        jmp     write_op
+w_ax:
+        call    op_ax
+        jmp     write_op
+continue3_1:
+        bt      ax, 1
+        jnc     continue4_1
+        cmp     al, 7
+        je      w_di
         call    op_bx
         jmp     write_op
-b5:
-        cmp     al, 0F0h
-        jl      op2_rr
-        cmp     al, 0F8h
-        jl      d3
+w_di:
         call    op_di
+        jmp     write_op
+continue4_1:
+        cmp      al, 1
+        je      w_cx
+        call    op_bp
+        jmp     write_op
+w_cx:
+        call    op_cx
         jmp     write_op
 d3:
         call    op_si
@@ -333,6 +350,12 @@ mee:
         jge     tab       
         mov     dx, offset register_line+17
         call    file_write_proc
+        pop     dx
+        push    dx
+        cmp     dx, 67h
+        jne     hhhh
+        pop     dx
+hhhh:
         jmp     register_exp
 operand_mem0:
         xor     bp, bp
