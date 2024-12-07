@@ -151,6 +151,78 @@ start:
         BTC     edi, esi
         BTC     edi, edi
         
+        BTC     word ptr ds:[bx+si], ax
+        BTC     word ptr ss:[bx+si], cx
+        BTC     word ptr cs:[bx+si], dx
+        BTC     word ptr es:[bx+si], bx
+        BTC     word ptr fs:[bx+si], sp
+        BTC     word ptr gs:[bx+si], bp
+        BTC     word ptr [bx+si], si
+        BTC     word ptr [bx+si], di
+        
+        BTC     dword ptr [bx+si], eax
+        BTC     dword ptr [bx+si], ecx
+        BTC     dword ptr [bx+si], edx
+        BTC     dword ptr [bx+si], ebx
+        BTC     dword ptr [bx+si], esp
+        BTC     dword ptr [bx+si], ebp
+        BTC     dword ptr [bx+si], esi
+        BTC     dword ptr [bx+si], edi
+        
+        BTC     word ptr ds:[bx+di], ax
+        BTC     word ptr ss:[bx+di], cx
+        BTC     word ptr cs:[bx+di], dx
+        BTC     word ptr es:[bx+di], bx
+        BTC     word ptr fs:[bx+di], sp
+        BTC     word ptr gs:[bx+di], bp
+        BTC     word ptr [bx+di], si
+        BTC     word ptr [bx+di], di
+        
+        BTC     dword ptr [bx+di], eax
+        BTC     dword ptr [bx+di], ecx
+        BTC     dword ptr [bx+di], edx
+        BTC     dword ptr [bx+di], ebx
+        BTC     dword ptr [bx+di], esp
+        BTC     dword ptr [bx+di], ebp
+        BTC     dword ptr [bx+di], esi
+        BTC     dword ptr [bx+di], edi
+        
+        BTC     word ptr ds:[bp+si], ax
+        BTC     word ptr ss:[bp+si], cx
+        BTC     word ptr cs:[bp+si], dx
+        BTC     word ptr es:[bp+si], bx
+        BTC     word ptr fs:[bp+si], sp
+        BTC     word ptr gs:[bp+si], bp
+        BTC     word ptr [bp+si], si
+        BTC     word ptr [bp+si], di
+        
+        BTC     dword ptr [bp+si], eax
+        BTC     dword ptr [bp+si], ecx
+        BTC     dword ptr [bp+si], edx
+        BTC     dword ptr [bp+si], ebx
+        BTC     dword ptr [bp+si], esp
+        BTC     dword ptr [bp+si], ebp
+        BTC     dword ptr [bp+si], esi
+        BTC     dword ptr [bp+si], edi
+        
+        BTC     word ptr ds:[bp+di], ax
+        BTC     word ptr ss:[bp+di], cx
+        BTC     word ptr cs:[bp+di], dx
+        BTC     word ptr es:[bp+di], bx
+        BTC     word ptr fs:[bp+di], sp
+        BTC     word ptr gs:[bp+di], bp
+        BTC     word ptr [bp+di], si
+        BTC     word ptr [bp+di], di
+        
+        BTC     dword ptr [bp+di], eax
+        BTC     dword ptr [bp+di], ecx
+        BTC     dword ptr [bp+di], edx
+        BTC     dword ptr [bp+di], ebx
+        BTC     dword ptr [bp+di], esp
+        BTC     dword ptr [bp+di], ebp
+        BTC     dword ptr [bp+di], esi
+        BTC     dword ptr [bp+di], edi
+        
         BTC     word ptr ds:[si], ax
         BTC     word ptr ss:[si], cx
         BTC     word ptr cs:[si], dx
@@ -219,12 +291,18 @@ start:
         JMP     edx
         JMP     ebx
         JMP     esp
-        JMP     ebx
+        JMP     ebp
         JMP     esi
         JMP     edi
         
-        JMP     [bx]
-        JMP     gs:[si]
-        JMP     [di]        
+        JMP     word ptr [bx+si]
+        JMP     word ptr gs:[bx+di]
+        JMP     word ptr [bp+si]
+        JMP     word ptr [bp+di]
+        JMP     word ptr [bx]
+        JMP     word ptr gs:[si]
+        JMP     word ptr [di]
+        ;
+        
         DAS
 end start

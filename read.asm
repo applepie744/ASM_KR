@@ -120,11 +120,13 @@ btc_check:
         lodsb
         xor     al, 0BBh
         jnz     exit                                  ;work with rm16/imm8 (rm32/imm8)    /BTC
-reg_or_mem:        
+reg_or_mem:
         lodsb
         sal     al, 1                             
-        jns     st_work_mem
-        jc      register_exp                      
+        jns     st_work_meme
+        jc      register_exp
+st_work_meme:
+         inc    bp       
 st_work_mem:
         cmp     sp, 100h
         je      skobka0
@@ -176,6 +178,11 @@ wr_seg_bx:
         cmp     cx, 65h
         jne     l
         push    cx
+        xchg    di, ax
+        mov     cx, 1
+        mov     dx, offset support_line+10
+        call    file_write_proc
+        xchg    di, ax
 l:
         mov     [len], ax
 wr_seg:        
@@ -235,7 +242,9 @@ exp:
         mov     bx, [descr]
         call    file_write_proc
         cmp     bp, 00FFh
-        je      operand_mem0                                 
+        je      operand_mem0
+        cmp     bp, 4
+        je      operand_mem
 operand_check:
         dec     si
         lodsb
@@ -384,6 +393,10 @@ operand_mem0:
 operand_mem:
         dec     si
         lodsb
+        pop     dx
+        cmp     dl, 67h
+        je      b32setka
+        push    dx
         sal     al, 1
         js      tab                         ;mod    01
         jc      tab                         ;mod    10
@@ -391,7 +404,28 @@ operand_mem:
         sal     al, 4
         bt      ax, 7        
         jc      no_sib
-        jmp     tab;maybe sib
+        bt      ax, 6
+        jc      m00rm1x
+        call    op_bx
+        mov     cx, 2
+        xchg    di, ax
+        call    file_write_proc
+        call    add_plus_symb
+b:
+        xchg    di, ax
+        bt      ax, 5
+        jc      m00rm001
+        mov     cx, 2
+        call    op_si
+        call    file_write_proc
+        jmp     close_skobka
+m00rm1x:
+        call    op_bp
+        mov     cx, 2
+        xchg    di, ax
+        call    file_write_proc
+        call    add_plus_symb
+        jmp     b
 no_sib: 
         mov     cx, 2
         bt      ax, 6
@@ -419,14 +453,41 @@ close_skobka:
         mov     dx, offset support_line+9
         call    file_write_proc
         cmp     bp, 3
-        je      i
+        jge     i
         xor     bp, bp
 i:
         jmp     mee
+m00rm001:
+        mov     cx, 2
+        call    op_di
+        call    file_write_proc
+        jmp     close_skobka  
+b32setka:
+        lodsb               ; optional string
+        jmp     close_skobka; optional string
+        ;sal     al, 1
+        ;js      tab                         ;mod    01
+        ;jc      tab                         ;mod    10
+                                            ;mod    00 
+        ;sal     al, 4
+        ;bt      ax, 7 
+        ;jmp     tab
         
-
+        
+        
 file_write_proc:
         mov     ah, 40h
         int     21h
+        ret
+add_e:
+        mov     dx, offset register_line
+        mov     cx, 1
+        mov     bx, [descr]
+        call    file_write_proc
+        ret
+add_plus_symb:
+        mov     cx, 1
+        mov     dx, offset support_line+7
+        call    file_write_proc
         ret
 end start
