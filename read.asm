@@ -119,7 +119,7 @@ btc_check:
         call    file_write_proc
         lodsb
         xor     al, 0BBh
-        jnz     exit                                  ;work with rm16/imm8 (rm32/imm8)    /BTC
+        jnz     imm8                                  ;work with rm16/imm8 (rm32/imm8)    /BTC
 reg_or_mem:
         lodsb
         sal     al, 1                             
@@ -251,6 +251,7 @@ operand_check:
         cmp     bp, 3
         jz      jj
         or      bp, bp
+        js      jj
         jnz     operand_2
         xor     bp, bp
 jj: 
@@ -381,6 +382,11 @@ mee:
         jge     tab       
         mov     dx, offset register_line+17
         call    file_write_proc
+        or      bp, bp
+        jnz     dk
+        call    num8
+        jmp     tab
+dk:
         pop     dx
         push    dx
         cmp     dx, 67h
@@ -457,6 +463,9 @@ close_skobka:
         xor     bp, bp
 i:
         jmp     mee
+imm8:
+        mov     bp, 0FFFFh
+        jmp     reg_or_mem
 m00rm001:
         mov     cx, 2
         call    op_di
@@ -490,4 +499,53 @@ add_plus_symb:
         mov     dx, offset support_line+7
         call    file_write_proc
         ret
+num8:
+            lodsb
+            
+            bt      ax, 7
+            jnc     fff
+            bt      ax, 5
+            jnc     fff
+            xchg    di, ax
+            mov     cx, 1
+            mov     [file_name], 30h
+            mov     dx, offset [file_name]
+            call    file_write_proc
+            xchg    di, ax
+fff:
+            movzx   ax, al
+            mov     dx, 10h
+            idiv    dl
+            cmp     al, 9
+            jle     ad
+            add     al, 7
+ad:
+            add     al, 30h
+            cmp     al, 30h
+            jz      ostatok
+co:
+            mov     cx, 1
+            mov     [file_name], al
+            mov     di, ax
+            mov     dx, offset [file_name] 
+            call    file_write_proc
+            mov     ax, di
+            xchg    ah, al
+            jmp     fff
+ostatok:
+            xchg    ah, al
+            cmp     al, 9
+            jl      adl
+            add     al, 7
+adl:
+            add     al, 30h
+            mov     [file_name], al
+            mov     cx, 1
+            mov     dx, offset [file_name] 
+            call    file_write_proc
+            
+            mov     [file_name], 68h
+            mov     dx, offset [file_name] 
+            call    file_write_proc
+            ret
 end start

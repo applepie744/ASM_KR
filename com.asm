@@ -151,6 +151,150 @@ start:
         BTC     edi, esi
         BTC     edi, edi
         
+        BTC     ax, 0FCh
+        BTC     ax, 0FCh
+        BTC     ax, 0FCh
+        BTC     ax, 0FCh
+        BTC     ax, 0FCh
+        BTC     ax, 0FCh
+        BTC     ax, 0FCh
+        BTC     ax, 0FCh
+        
+        BTC     cx, 0FCh
+        BTC     cx, 0FCh
+        BTC     cx, 0FCh
+        BTC     cx, 0FCh
+        BTC     cx, 0FCh
+        BTC     cx, 0FCh
+        BTC     cx, 0FCh
+        BTC     cx, 0FCh
+        
+        BTC     dx, 0FCh
+        BTC     dx, 0FCh
+        BTC     dx, 0FCh
+        BTC     dx, 0FCh
+        BTC     dx, 0FCh
+        BTC     dx, 0FCh
+        BTC     dx, 0FCh
+        BTC     dx, 0FCh
+        
+        BTC     bx, 0FCh
+        BTC     bx, 0FCh
+        BTC     bx, 0FCh
+        BTC     bx, 0FCh
+        BTC     bx, 0FCh
+        BTC     bx, 0FCh
+        BTC     bx, 0FCh
+        BTC     bx, 0FCh
+        
+        BTC     sp, 0FCh
+        BTC     sp, 0FCh
+        BTC     sp, 0FCh
+        BTC     sp, 0FCh
+        BTC     sp, 0FCh
+        BTC     sp, 0FCh
+        BTC     sp, 0FCh
+        BTC     sp, 0FCh
+        
+        BTC     bp, 0FCh
+        BTC     bp, 0FCh
+        BTC     bp, 0FCh
+        BTC     bp, 0FCh
+        BTC     bp, 0FCh
+        BTC     bp, 0FCh
+        BTC     bp, 0FCh
+        BTC     bp, 0FCh
+        
+        BTC     si, 0FCh
+        BTC     si, 0FCh
+        BTC     si, 0FCh
+        BTC     si, 0FCh
+        BTC     si, 0FCh
+        BTC     si, 0FCh
+        BTC     si, 0FCh
+        BTC     si, 0FCh
+        
+        BTC     di, 0FCh
+        BTC     di, 0FCh
+        BTC     di, 0FCh
+        BTC     di, 0FCh
+        BTC     di, 0FCh
+        BTC     di, 0FCh
+        BTC     di, 0FCh
+        BTC     di, 0FCh
+        
+        BTC     eax, 0FCh
+        BTC     eax, 0FCh
+        BTC     eax, 0FCh
+        BTC     eax, 0FCh
+        BTC     eax, 0FCh
+        BTC     eax, 0FCh
+        BTC     eax, 0FCh
+        BTC     eax, 0FCh
+        
+        BTC     ecx, 0FCh
+        BTC     ecx, 0FCh
+        BTC     ecx, 0FCh
+        BTC     ecx, 0FCh
+        BTC     ecx, 0FCh
+        BTC     ecx, 0FCh
+        BTC     ecx, 0FCh
+        BTC     ecx, 0FCh
+        
+        BTC     edx, 0FCh
+        BTC     edx, 0FCh
+        BTC     edx, 0FCh
+        BTC     edx, 0FCh
+        BTC     edx, 0FCh
+        BTC     edx, 0FCh
+        BTC     edx, 0FCh
+        BTC     edx, 0FCh
+        
+        BTC     ebx, 0FCh
+        BTC     ebx, 0FCh
+        BTC     ebx, 0FCh
+        BTC     ebx, 0FCh
+        BTC     ebx, 0FCh
+        BTC     ebx, 0FCh
+        BTC     ebx, 0FCh
+        BTC     ebx, 0FCh
+        
+        BTC     esp, 0FCh
+        BTC     esp, 0FCh
+        BTC     esp, 0FCh
+        BTC     esp, 0FCh
+        BTC     esp, 0FCh
+        BTC     esp, 0FCh
+        BTC     esp, 0FCh
+        BTC     esp, 0FCh
+        
+        BTC     ebp, 0FCh
+        BTC     ebp, 0FCh
+        BTC     ebp, 0FCh
+        BTC     ebp, 0FCh
+        BTC     ebp, 0FCh
+        BTC     ebp, 0FCh
+        BTC     ebp, 0FCh
+        BTC     ebp, 0FCh
+        
+        BTC     esi, 0FCh
+        BTC     esi, 0FCh
+        BTC     esi, 0FCh
+        BTC     esi, 0FCh
+        BTC     esi, 0FCh
+        BTC     esi, 0FCh
+        BTC     esi, 0FCh
+        BTC     esi, 0FCh
+        
+        BTC     edi, 0FCh
+        BTC     edi, 0FCh
+        BTC     edi, 0FCh
+        BTC     edi, 0FCh
+        BTC     edi, 0FCh
+        BTC     edi, 0FCh
+        BTC     edi, 0FCh
+        BTC     edi, 0FCh
+        
         BTC     word ptr ds:[bx+si], ax
         BTC     word ptr ss:[bx+si], cx
         BTC     word ptr cs:[bx+si], dx
