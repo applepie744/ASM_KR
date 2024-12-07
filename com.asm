@@ -295,6 +295,132 @@ start:
         BTC     edi, 0FCh
         BTC     edi, 0FCh
         
+        BTC     word ptr ds:[bx+si], 15h
+        BTC     word ptr ss:[bx+si], 15h
+        BTC     word ptr cs:[bx+si], 15h
+        BTC     word ptr es:[bx+si], 15h
+        BTC     word ptr fs:[bx+si], 15h
+        BTC     word ptr gs:[bx+si], 15h
+        BTC     word ptr [bx+si], 15h
+        BTC     word ptr [bx+si], 15h
+        
+        BTC     dword ptr [bx+si], 15h
+        BTC     dword ptr [bx+si], 15h
+        BTC     dword ptr [bx+si], 15h
+        BTC     dword ptr [bx+si], 15h
+        BTC     dword ptr [bx+si], 15h
+        BTC     dword ptr [bx+si], 15h
+        BTC     dword ptr [bx+si], 15h
+        BTC     dword ptr [bx+si], 15h
+        
+        BTC     word ptr ds:[bx+di], 15h
+        BTC     word ptr ss:[bx+di], 15h
+        BTC     word ptr cs:[bx+di], 15h
+        BTC     word ptr es:[bx+di], 15h
+        BTC     word ptr fs:[bx+di], 15h
+        BTC     word ptr gs:[bx+di], 15h
+        BTC     word ptr [bx+di], 15h
+        BTC     word ptr [bx+di], 15h
+        
+        BTC     dword ptr [bx+di], 15h
+        BTC     dword ptr [bx+di], 15h
+        BTC     dword ptr [bx+di], 15h
+        BTC     dword ptr [bx+di], 15h
+        BTC     dword ptr [bx+di], 15h
+        BTC     dword ptr [bx+di], 15h
+        BTC     dword ptr [bx+di], 15h
+        BTC     dword ptr [bx+di], 15h
+        
+        BTC     word ptr ds:[bp+si], 15h
+        BTC     word ptr ss:[bp+si], 15h
+        BTC     word ptr cs:[bp+si], 15h
+        BTC     word ptr es:[bp+si], 15h
+        BTC     word ptr fs:[bp+si], 15h
+        BTC     word ptr gs:[bp+si], 15h
+        BTC     word ptr [bp+si], 15h
+        BTC     word ptr [bp+si], 15h
+        
+        BTC     dword ptr [bp+si], 15h
+        BTC     dword ptr [bp+si], 15h
+        BTC     dword ptr [bp+si], 15h
+        BTC     dword ptr [bp+si], 15h
+        BTC     dword ptr [bp+si], 15h
+        BTC     dword ptr [bp+si], 15h
+        BTC     dword ptr [bp+si], 15h
+        BTC     dword ptr [bp+si], 15h
+        
+        BTC     word ptr ds:[bp+di], 15h
+        BTC     word ptr ss:[bp+di], 15h
+        BTC     word ptr cs:[bp+di], 15h
+        BTC     word ptr es:[bp+di], 15h
+        BTC     word ptr fs:[bp+di], 15h
+        BTC     word ptr gs:[bp+di], 15h
+        BTC     word ptr [bp+di], 15h
+        BTC     word ptr [bp+di], 15h
+        
+        BTC     dword ptr [bp+di], 15h
+        BTC     dword ptr [bp+di], 15h
+        BTC     dword ptr [bp+di], 15h
+        BTC     dword ptr [bp+di], 15h
+        BTC     dword ptr [bp+di], 15h
+        BTC     dword ptr [bp+di], 15h
+        BTC     dword ptr [bp+di], 15h
+        BTC     dword ptr [bp+di], 15h
+        
+        BTC     word ptr ds:[si], 15h
+        BTC     word ptr ss:[si], 15h
+        BTC     word ptr cs:[si], 15h
+        BTC     word ptr es:[si], 15h
+        BTC     word ptr fs:[si], 15h
+        BTC     word ptr gs:[si], 15h
+        BTC     word ptr [si], 15h
+        BTC     word ptr [si], 15h
+        
+        BTC     dword ptr [si], 15h
+        BTC     dword ptr [si], 15h
+        BTC     dword ptr [si], 15h
+        BTC     dword ptr [si], 15h
+        BTC     dword ptr [si], 15h
+        BTC     dword ptr [si], 15h
+        BTC     dword ptr [si], 15h
+        BTC     dword ptr [si], 15h
+        
+        BTC     word ptr [di], 15h
+        BTC     word ptr [di], 15h
+        BTC     word ptr [di], 15h
+        BTC     word ptr [di], 15h
+        BTC     word ptr [di], 15h
+        BTC     word ptr [di], 15h
+        BTC     word ptr [di], 15h
+        BTC     word ptr [di], 15h
+        
+        BTC     dword ptr [di], 15h
+        BTC     dword ptr [di], 15h
+        BTC     dword ptr [di], 15h
+        BTC     dword ptr [di], 15h
+        BTC     dword ptr [di], 15h
+        BTC     dword ptr [di], 15h
+        BTC     dword ptr [di], 15h
+        BTC     dword ptr [di], 15h
+        
+        BTC     word ptr [bx], 15h
+        BTC     word ptr [bx], 15h
+        BTC     word ptr [bx], 15h
+        BTC     word ptr [bx], 15h
+        BTC     word ptr [bx], 15h
+        BTC     word ptr [bx], 15h
+        BTC     word ptr [bx], 15h
+        BTC     word ptr [bx], 15h
+        
+        BTC     dword ptr [bx], 15h
+        BTC     dword ptr [bx], 15h
+        BTC     dword ptr [bx], 15h
+        BTC     dword ptr [bx], 15h
+        BTC     dword ptr [bx], 15h
+        BTC     dword ptr [bx], 15h
+        BTC     dword ptr [bx], 15h
+        BTC     dword ptr [bx], 0Ah
+        
         BTC     word ptr ds:[bx+si], ax
         BTC     word ptr ss:[bx+si], cx
         BTC     word ptr cs:[bx+si], dx
@@ -419,7 +545,7 @@ start:
         BTC     dword ptr [bx], esp
         BTC     dword ptr [bx], ebp
         BTC     dword ptr [bx], esi
-        BTC     dword ptr [bx], edi
+        BTC     dword ptr [bx], edi        
         
         JMP     ax
         JMP     cx

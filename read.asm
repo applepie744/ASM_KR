@@ -126,6 +126,8 @@ reg_or_mem:
         jns     st_work_meme
         jc      register_exp
 st_work_meme:
+         cmp     bp, 0FFFFh
+         jz      st_work_mem
          inc    bp       
 st_work_mem:
         cmp     sp, 100h
@@ -460,6 +462,7 @@ close_skobka:
         call    file_write_proc
         cmp     bp, 3
         jge     i
+        js      mee
         xor     bp, bp
 i:
         jmp     mee
@@ -506,12 +509,13 @@ num8:
             jnc     fff
             bt      ax, 5
             jnc     fff
-            xchg    di, ax
+            push    ax
             mov     cx, 1
             mov     [file_name], 30h
             mov     dx, offset [file_name]
             call    file_write_proc
-            xchg    di, ax
+            inc     di
+            pop     ax
 fff:
             movzx   ax, al
             mov     dx, 10h
@@ -526,16 +530,27 @@ ad:
 co:
             mov     cx, 1
             mov     [file_name], al
-            mov     di, ax
+            push    ax
             mov     dx, offset [file_name] 
             call    file_write_proc
-            mov     ax, di
+            inc     di
+            pop     ax
             xchg    ah, al
             jmp     fff
 ostatok:
             xchg    ah, al
             cmp     al, 9
             jl      adl
+            push    ax
+            cmp     di, 1
+            jge     e
+            mov     cx, 1
+            mov     [file_name], 30h
+            mov     dx, offset [file_name] 
+            call    file_write_proc
+            inc     di
+e:
+            pop     ax
             add     al, 7
 adl:
             add     al, 30h
@@ -543,9 +558,11 @@ adl:
             mov     cx, 1
             mov     dx, offset [file_name] 
             call    file_write_proc
+            inc     di
             
             mov     [file_name], 68h
             mov     dx, offset [file_name] 
             call    file_write_proc
+            xor     di, di
             ret
 end start
