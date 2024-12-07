@@ -128,6 +128,8 @@ reg_or_mem:
 st_work_meme:
          cmp     bp, 0FFFFh
          jz      st_work_mem
+         or     bp, bp
+         jz     st_work_mem
          inc    bp       
 st_work_mem:
         cmp     sp, 100h
@@ -230,7 +232,7 @@ jmp_check:
         lodsb
         cmp     al, 0FFh
         jne     tab; EB/EA/E9 
-        mov     bp, 3
+        mov     bp, 2
         jmp     reg_or_mem
         
 register_exp:        
@@ -250,7 +252,7 @@ exp:
 operand_check:
         dec     si
         lodsb
-        cmp     bp, 3
+        cmp     bp, 2
         jz      jj
         or      bp, bp
         js      jj
