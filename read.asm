@@ -553,70 +553,23 @@ add_plus_symb:
         ret
 num8:
             lodsb
+            sal     ax, 8
             
-            or      di, di
-            jnz     fff
-            bt      ax, 7
-            jnc     fff
-            bt      ax, 5
-            jnc     fff
-            push    ax
-            mov     cx, 1
-            mov     [file_name], 30h
-            mov     dx, offset [file_name]
-            call    file_write_proc
-            inc     di
-            pop     ax
-fff:
-            movzx   ax, al
-            mov     dx, 10h
-            idiv    dl
-            cmp     al, 9
-            jle     ad
-            add     al, 7
-ad:
-            add     al, 30h
-            cmp     al, 30h
-            jz      ostatok
-co:
-            mov     cx, 1
-            mov     [file_name], al
-            push    ax
-            mov     dx, offset [file_name] 
-            call    file_write_proc
-            inc     di
-            pop     ax
-            xchg    ah, al
-            jmp     fff
-ostatok:
-            xchg    ah, al
-            cmp     al, 9
-            jl      adl
-            push    ax
-            cmp     di, 1
-            jge     e
-            mov     cx, 1
-            mov     [file_name], 30h
-            mov     dx, offset [file_name] 
-            call    file_write_proc
-            inc     di
-e:
-            pop     ax
-            add     al, 7
-adl:
-            add     al, 30h
-            mov     [file_name], al
-            mov     dx, offset [file_name] 
-            call    file_write_proc
             xor     di, di
-            mov     [file_name], 68h
-            mov     dx, offset [file_name] 
-            call    file_write_proc
+            mov     cx, 2
+            call    num
+            xor     di, di
             ret
             
 num16:
+            xor     di, di
             lodsw
             mov     cx, 4
+            call    num
+            xor     di, di
+            sub     si, 2
+            ret
+num:
         smen:
             or      di, di
             jnz     f
@@ -658,7 +611,6 @@ num16:
             or      cx, cx
             jnz     smen       
             xor     di, di
-            sub     si, 2
             mov     cx, 1
             mov     [file_name], 68h
             mov     dx, offset [file_name] 
