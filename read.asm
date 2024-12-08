@@ -410,9 +410,6 @@ mee:
         jnz     dk
         xor     di, di
         call    num8
-        mov     [file_name], 68h
-        mov     dx, offset [file_name] 
-        call    file_write_proc
         jmp     tab
 dk:
         pop     dx
@@ -466,9 +463,6 @@ dist_check:
         call    add_plus_symb
         xor     di, di
         call    num8
-        mov     [file_name], 68h
-        mov     dx, offset [file_name] 
-        call    file_write_proc
         mov     [res_name], 8h
         dec     si
         add     sp, 2
@@ -480,7 +474,6 @@ next_var:
         xor     di, di
         call    num16
         mov     [res_name], 16h
-        sub     si, 2
         add     sp, 2
         jmp     close_skobka 
 m00rm1x:
@@ -612,35 +605,63 @@ e:
             add     al, 7
 adl:
             add     al, 30h
-            push    ax
-            mov     [file_name], ah
-            mov     cx, 1
-            mov     dx, offset [file_name] 
-            call    file_write_proc
-            pop     ax
-            cmp     al, ah
-            je      ex
             mov     [file_name], al
             mov     dx, offset [file_name] 
             call    file_write_proc
-            inc     di
-ex:           
-            ret
-            
-num16:
-            inc     si
             xor     di, di
-            push    ax
-            movzx   ax, al
-            call    num8
-            pop     ax
-            movzx   ax, al
-            sub     si, 2
-            call    num8
             mov     [file_name], 68h
             mov     dx, offset [file_name] 
             call    file_write_proc
-            add     si, 1
+            ret
+            
+num16:
+            lodsw
+            mov     cx, 4
+        smen:
+            or      di, di
+            jnz     f
+            bt      ax, 15
+            jnc     f
+            bt      ax, 13
+            jnc     f
+            push    ax
+            push    cx
+            mov     cx, 1
+            mov     [file_name], 30h
+            mov     dx, offset [file_name]
+            call    file_write_proc
+            inc     di
+            pop     ax
+            pop     cx
+        f:
+            rol     ax, 4
+            push    ax
+            push    cx
+            btr     ax, 4
+            btr     ax, 5
+            btr     ax, 6
+            btr     ax, 7
+            movzx   ax, al
+            cmp     al, 9
+            jle     ado
+            add     al, 7
+        ado:
+            add     al, 30h
+            mov     [file_name], al
+            mov     cx, 1
+            mov     dx, offset [file_name]
+            call    file_write_proc
+            inc     di
+            pop     cx
+            dec     cx
+            pop     ax
+            or      cx, cx
+            jnz     smen       
             xor     di, di
+            sub     si, 2
+            mov     cx, 1
+            mov     [file_name], 68h
+            mov     dx, offset [file_name] 
+            call    file_write_proc
             ret
 end start
