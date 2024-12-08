@@ -15,6 +15,7 @@ buff            db  1234  dup(?)
 start: 
         mov     ax, @data
         mov     ds, ax
+        mov     es, ax
         
         mov     ax,3D00h                
         mov     dx,offset file_name
@@ -51,10 +52,16 @@ start:
         jmp     after_exp
 while:
         pop    dx
+        cmp    sp, 100h
+        jge     after_expe
         pop    dx
+        cmp    sp, 100h
+        jge     after_expe
         pop    dx
+after_expe:
         mov    sp, 0100h
 after_exp:
+        xor     di, di
         lodsb  
         or      al, al                      
         jz      exit                        
@@ -383,7 +390,8 @@ write_op:
 mee:
         inc     bp
         cmp     bp, 2
-        jge     tab       
+        jge     tab
+        mov     cx, 2
         mov     dx, offset register_line+17
         call    file_write_proc
         or      bp, bp
@@ -398,6 +406,9 @@ dk:
         pop     dx
 hhhh:
         jmp     register_exp
+mod01:
+        push     8h
+        jmp     mod00
 operand_mem0:
         xor     bp, bp
 operand_mem:
@@ -408,9 +419,9 @@ operand_mem:
         je      b32setka
         push    dx
         sal     al, 1
-        js      tab                         ;mod    01
+        js      mod01                         ;mod    01
         jc      tab                         ;mod    10
-                                            ;mod    00 
+mod00:                                            ;mod    00 
         sal     al, 4
         bt      ax, 7        
         jc      no_sib
@@ -428,7 +439,14 @@ b:
         mov     cx, 2
         call    op_si
         call    file_write_proc
-        jmp     close_skobka
+dist_check:
+        pop     di
+        sub     sp, 2
+        cmp     di, 8h
+        jne     close_skobka
+        call    add_plus_symb
+        call    num8
+        jmp     close_skobka 
 m00rm1x:
         call    op_bp
         mov     cx, 2
@@ -444,20 +462,20 @@ no_sib:
         jc      w_di9
         call    op_si
         call    file_write_proc
-        jmp     close_skobka
+        jmp     dist_check
 w_di9:
         call    op_di
         call    file_write_proc
-        jmp     close_skobka
+        jmp     dist_check
 n_sib_bx_num:
         bt      ax, 5
         jc      w_bx9
-        ;num
+        ;num16
         jmp     close_skobka
 w_bx9:
         call    op_bx
         call    file_write_proc
-        jmp     close_skobka
+        jmp     dist_check
 close_skobka:
         mov     cx, 1
         mov     dx, offset support_line+9
@@ -475,7 +493,7 @@ m00rm001:
         mov     cx, 2
         call    op_di
         call    file_write_proc
-        jmp     close_skobka  
+        jmp     dist_check 
 b32setka:
         lodsb               ; optional string
         jmp     close_skobka; optional string
@@ -505,6 +523,7 @@ add_plus_symb:
         call    file_write_proc
         ret
 num8:
+            xor di, di
             lodsb
             
             bt      ax, 7

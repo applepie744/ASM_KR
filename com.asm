@@ -6,7 +6,7 @@ B dw 1234h
     .code
     org 100h   
 start:
-;exampl
+;exampl 
         BTC     ax, ax
         BTC     ax, cx
         BTC     ax, dx
@@ -421,131 +421,131 @@ start:
         BTC     dword ptr [bx], 15h
         BTC     dword ptr [bx], 0Ah
         
-        BTC     word ptr ds:[bx+si], ax
-        BTC     word ptr ss:[bx+si], cx
-        BTC     word ptr cs:[bx+si], dx
-        BTC     word ptr es:[bx+si], bx
-        BTC     word ptr fs:[bx+si], sp
-        BTC     word ptr gs:[bx+si], bp
-        BTC     word ptr [bx+si], si
-        BTC     word ptr [bx+si], di
+        BTC     word ptr ds:[bx+si+8h], ax
+        BTC     word ptr ss:[bx+si+8h], cx
+        BTC     word ptr cs:[bx+si+8h], dx
+        BTC     word ptr es:[bx+si+8h], bx
+        BTC     word ptr fs:[bx+si+8h], sp
+        BTC     word ptr gs:[bx+si+8h], bp
+        BTC     word ptr [bx+si+8h], si
+        BTC     word ptr [bx+si+8h], di
         
-        BTC     dword ptr [bx+si], eax
-        BTC     dword ptr [bx+si], ecx
-        BTC     dword ptr [bx+si], edx
-        BTC     dword ptr [bx+si], ebx
-        BTC     dword ptr [bx+si], esp
-        BTC     dword ptr [bx+si], ebp
-        BTC     dword ptr [bx+si], esi
-        BTC     dword ptr [bx+si], edi
+        BTC     dword ptr [bx+si+8h], eax
+        BTC     dword ptr [bx+si+8h], ecx
+        BTC     dword ptr [bx+si+8h], edx
+        BTC     dword ptr [bx+si+8h], ebx
+        BTC     dword ptr [bx+si+8h], esp
+        BTC     dword ptr [bx+si+8h], ebp
+        BTC     dword ptr [bx+si+8h], esi
+        BTC     dword ptr [bx+si+8h], edi
         
-        BTC     word ptr ds:[bx+di], ax
-        BTC     word ptr ss:[bx+di], cx
-        BTC     word ptr cs:[bx+di], dx
-        BTC     word ptr es:[bx+di], bx
-        BTC     word ptr fs:[bx+di], sp
-        BTC     word ptr gs:[bx+di], bp
-        BTC     word ptr [bx+di], si
-        BTC     word ptr [bx+di], di
+        BTC     word ptr ds:[bx+di+8h], ax
+        BTC     word ptr ss:[bx+di+8h], cx
+        BTC     word ptr cs:[bx+di+8h], dx
+        BTC     word ptr es:[bx+di+8h], bx
+        BTC     word ptr fs:[bx+di+8h], sp
+        BTC     word ptr gs:[bx+di+8h], bp
+        BTC     word ptr [bx+di+8h], si
+        BTC     word ptr [bx+di+8h], di
         
-        BTC     dword ptr [bx+di], eax
-        BTC     dword ptr [bx+di], ecx
-        BTC     dword ptr [bx+di], edx
-        BTC     dword ptr [bx+di], ebx
-        BTC     dword ptr [bx+di], esp
-        BTC     dword ptr [bx+di], ebp
-        BTC     dword ptr [bx+di], esi
-        BTC     dword ptr [bx+di], edi
+        BTC     dword ptr [bx+di+8h], eax
+        BTC     dword ptr [bx+di+8h], ecx
+        BTC     dword ptr [bx+di+8h], edx
+        BTC     dword ptr [bx+di+8h], ebx
+        BTC     dword ptr [bx+di+8h], esp
+        BTC     dword ptr [bx+di+8h], ebp
+        BTC     dword ptr [bx+di+8h], esi
+        BTC     dword ptr [bx+di+8h], edi
         
-        BTC     word ptr ds:[bp+si], ax
-        BTC     word ptr ss:[bp+si], cx
-        BTC     word ptr cs:[bp+si], dx
-        BTC     word ptr es:[bp+si], bx
-        BTC     word ptr fs:[bp+si], sp
-        BTC     word ptr gs:[bp+si], bp
-        BTC     word ptr [bp+si], si
-        BTC     word ptr [bp+si], di
+        BTC     word ptr ds:[bp+si+8h], ax
+        BTC     word ptr ss:[bp+si+8h], cx
+        BTC     word ptr cs:[bp+si+8h], dx
+        BTC     word ptr es:[bp+si+8h], bx
+        BTC     word ptr fs:[bp+si+8h], sp
+        BTC     word ptr gs:[bp+si+8h], bp
+        BTC     word ptr [bp+si+8h], si
+        BTC     word ptr [bp+si+8h], di
         
-        BTC     dword ptr [bp+si], eax
-        BTC     dword ptr [bp+si], ecx
-        BTC     dword ptr [bp+si], edx
-        BTC     dword ptr [bp+si], ebx
-        BTC     dword ptr [bp+si], esp
-        BTC     dword ptr [bp+si], ebp
-        BTC     dword ptr [bp+si], esi
-        BTC     dword ptr [bp+si], edi
+        BTC     dword ptr [bp+si+8h], eax
+        BTC     dword ptr [bp+si+8h], ecx
+        BTC     dword ptr [bp+si+8h], edx
+        BTC     dword ptr [bp+si+8h], ebx
+        BTC     dword ptr [bp+si+8h], esp
+        BTC     dword ptr [bp+si+8h], ebp
+        BTC     dword ptr [bp+si+8h], esi
+        BTC     dword ptr [bp+si+8h], edi
         
-        BTC     word ptr ds:[bp+di], ax
-        BTC     word ptr ss:[bp+di], cx
-        BTC     word ptr cs:[bp+di], dx
-        BTC     word ptr es:[bp+di], bx
-        BTC     word ptr fs:[bp+di], sp
-        BTC     word ptr gs:[bp+di], bp
-        BTC     word ptr [bp+di], si
-        BTC     word ptr [bp+di], di
+        BTC     word ptr ds:[bp+di+8h], ax
+        BTC     word ptr ss:[bp+di+8h], cx
+        BTC     word ptr cs:[bp+di+8h], dx
+        BTC     word ptr es:[bp+di+8h], bx
+        BTC     word ptr fs:[bp+di+8h], sp
+        BTC     word ptr gs:[bp+di+8h], bp
+        BTC     word ptr [bp+di+8h], si
+        BTC     word ptr [bp+di+8h], di
         
-        BTC     dword ptr [bp+di], eax
-        BTC     dword ptr [bp+di], ecx
-        BTC     dword ptr [bp+di], edx
-        BTC     dword ptr [bp+di], ebx
-        BTC     dword ptr [bp+di], esp
-        BTC     dword ptr [bp+di], ebp
-        BTC     dword ptr [bp+di], esi
-        BTC     dword ptr [bp+di], edi
+        BTC     dword ptr [bp+di+8h], eax
+        BTC     dword ptr [bp+di+8h], ecx
+        BTC     dword ptr [bp+di+8h], edx
+        BTC     dword ptr [bp+di+8h], ebx
+        BTC     dword ptr [bp+di+8h], esp
+        BTC     dword ptr [bp+di+8h], ebp
+        BTC     dword ptr [bp+di+8h], esi
+        BTC     dword ptr [bp+di+8h], edi
         
-        BTC     word ptr ds:[si], ax
-        BTC     word ptr ss:[si], cx
-        BTC     word ptr cs:[si], dx
-        BTC     word ptr es:[si], bx
-        BTC     word ptr fs:[si], sp
-        BTC     word ptr gs:[si], bp
-        BTC     word ptr [si], si
-        BTC     word ptr [si], di
+        BTC     word ptr ds:[si+8h], ax
+        BTC     word ptr ss:[si+8h], cx
+        BTC     word ptr cs:[si+8h], dx
+        BTC     word ptr es:[si+8h], bx
+        BTC     word ptr fs:[si+8h], sp
+        BTC     word ptr gs:[si+8h], bp
+        BTC     word ptr [si+8h], si
+        BTC     word ptr [si+8h], di
         
-        BTC     dword ptr [si], eax
-        BTC     dword ptr [si], ecx
-        BTC     dword ptr [si], edx
-        BTC     dword ptr [si], ebx
-        BTC     dword ptr [si], esp
-        BTC     dword ptr [si], ebp
-        BTC     dword ptr [si], esi
-        BTC     dword ptr [si], edi
+        BTC     dword ptr [si+8h], eax
+        BTC     dword ptr [si+8h], ecx
+        BTC     dword ptr [si+8h], edx
+        BTC     dword ptr [si+8h], ebx
+        BTC     dword ptr [si+8h], esp
+        BTC     dword ptr [si+8h], ebp
+        BTC     dword ptr [si+8h], esi
+        BTC     dword ptr [si+8h], edi
         
-        BTC     word ptr [di], ax
-        BTC     word ptr [di], cx
-        BTC     word ptr [di], dx
-        BTC     word ptr [di], bx
-        BTC     word ptr [di], sp
-        BTC     word ptr [di], bp
-        BTC     word ptr [di], si
-        BTC     word ptr [di], di
+        BTC     word ptr [di+8h], ax
+        BTC     word ptr [di+8h], cx
+        BTC     word ptr [di+8h], dx
+        BTC     word ptr [di+8h], bx
+        BTC     word ptr [di+8h], sp
+        BTC     word ptr [di+8h], bp
+        BTC     word ptr [di+8h], si
+        BTC     word ptr [di+8h], di
         
-        BTC     dword ptr [di], eax
-        BTC     dword ptr [di], ecx
-        BTC     dword ptr [di], edx
-        BTC     dword ptr [di], ebx
-        BTC     dword ptr [di], esp
-        BTC     dword ptr [di], ebp
-        BTC     dword ptr [di], esi
-        BTC     dword ptr [di], edi
+        BTC     dword ptr [di+8h], eax
+        BTC     dword ptr [di+8h], ecx
+        BTC     dword ptr [di+8h], edx
+        BTC     dword ptr [di+8h], ebx
+        BTC     dword ptr [di+8h], esp
+        BTC     dword ptr [di+8h], ebp
+        BTC     dword ptr [di+8h], esi
+        BTC     dword ptr [di+8h], edi
         
-        BTC     word ptr [bx], ax
-        BTC     word ptr [bx], cx
-        BTC     word ptr [bx], dx
-        BTC     word ptr [bx], bx
-        BTC     word ptr [bx], sp
-        BTC     word ptr [bx], bp
-        BTC     word ptr [bx], si
-        BTC     word ptr [bx], di
+        BTC     word ptr [bx+8h], ax
+        BTC     word ptr [bx+8h], cx
+        BTC     word ptr [bx+8h], dx
+        BTC     word ptr [bx+8h], bx
+        BTC     word ptr [bx+8h], sp
+        BTC     word ptr [bx+8h], bp
+        BTC     word ptr [bx+8h], si
+        BTC     word ptr [bx+8h], di
         
-        BTC     dword ptr [bx], eax
-        BTC     dword ptr [bx], ecx
-        BTC     dword ptr [bx], edx
-        BTC     dword ptr [bx], ebx
-        BTC     dword ptr [bx], esp
-        BTC     dword ptr [bx], ebp
-        BTC     dword ptr [bx], esi
-        BTC     dword ptr [bx], edi        
+        BTC     dword ptr [bx+8h], eax
+        BTC     dword ptr [bx+8h], ecx
+        BTC     dword ptr [bx+8h], edx
+        BTC     dword ptr [bx+8h], ebx
+        BTC     dword ptr [bx+8h], esp
+        BTC     dword ptr [bx+8h], ebp
+        BTC     dword ptr [bx+8h], esi
+        BTC     dword ptr [bx+8h], edi        
         
         JMP     ax
         JMP     cx
