@@ -51,6 +51,7 @@ start:
         mov     SI, offset buff
         jmp     after_exp
 while:
+        mov    [res_name], 0h
         pop    dx
         cmp    sp, 100h
         jge     after_expe
@@ -229,6 +230,11 @@ tab:
         mov     cx, 2
         mov     dx, offset [command_line+11]
         call    file_write_proc
+        mov     al, [res_name]
+        cmp     al, 8 
+        jne     endd
+        lodsb
+endd:
         jmp     while                     
 jmp_check:
         mov     cx, 4
@@ -396,6 +402,7 @@ mee:
         call    file_write_proc
         or      bp, bp
         jnz     dk
+        xor     di, di
         call    num8
         jmp     tab
 dk:
@@ -445,7 +452,11 @@ dist_check:
         cmp     di, 8h
         jne     close_skobka
         call    add_plus_symb
+        xor     di, di
         call    num8
+        mov     [res_name], 8h
+        dec     si
+        add     sp, 2
         jmp     close_skobka 
 m00rm1x:
         call    op_bp
@@ -523,7 +534,6 @@ add_plus_symb:
         call    file_write_proc
         ret
 num8:
-            xor di, di
             lodsb
             
             bt      ax, 7
