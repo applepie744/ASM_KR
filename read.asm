@@ -631,8 +631,8 @@ num16:
             mov     dx, offset [file_name]
             call    file_write_proc
             inc     di
-            pop     ax
             pop     cx
+            pop     ax
         f:
             rol     ax, 4
             push    ax
