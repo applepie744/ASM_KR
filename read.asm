@@ -158,9 +158,18 @@ che:
         je      wr_seg_bx
         push    bx
 er:     
+        cmp     bx, 65h
+        jne     lll
+        jmp     dshka
+lll: 
         cmp     ax, 65h
         jne     p
         push    ax
+dshka:
+        cmp     al, 67h
+        jne     k
+        push    ax
+k:
         mov     bx, [descr]
         mov     cx, 1
         mov     dx, offset support_line+10
@@ -222,7 +231,7 @@ skobka:
         pop     ax
         push    ax
         cmp     ax, 67h
-        je      exp
+        je      expi
         jmp     operand_mem        
 tab:
         xor     bp, bp
@@ -257,7 +266,10 @@ register_exp:
         pop     dx
         push    dx
         cmp     dl, 65h
-        jne     operand_check 
+        jne     operand_check
+        jmp     exp
+expi:
+        mov     bp, 0FFFEh 
 exp:        
         mov     dx, offset register_line
         mov     cx, 1
@@ -272,10 +284,11 @@ operand_check:
         lodsb
         cmp     bp, 2
         jz      jj
+        cmp     bp, 0FFFEh
+        je      jj
         or      bp, bp
         js      jj
         jnz     operand_2
-        xor     bp, bp
 jj: 
         shrd    dx, ax, 4
         jns     op1_other_zn
@@ -400,6 +413,8 @@ write_op:
         call    file_write_proc
 mee:
         inc     bp
+        or      bp, bp
+        js      btc_32op2 
         cmp     bp, 2
         jge     tab
         mov     cx, 2
@@ -515,6 +530,9 @@ close_skobka:
         xor     bp, bp
 i:
         jmp     mee
+btc_32op2:
+        xor     bp, bp
+        jz      close_skobka
 imm8:
         mov     bp, 0FFFFh
         jmp     reg_or_mem
@@ -524,8 +542,13 @@ m00rm001:
         call    file_write_proc
         jmp     dist_check 
 b32setka:
-        lodsb               ; optional string
+        lodsb               
+        btr     ax, 3
+        cmp     al, 4
+        jne     no_SIBb             
         jmp     close_skobka; optional string
+no_SIBb:
+        jmp     close_skobka
         ;sal     al, 1
         ;js      tab                         ;mod    01
         ;jc      tab                         ;mod    10
@@ -617,4 +640,9 @@ num:
             mov     dx, offset [file_name] 
             call    file_write_proc
             ret
+close_skobka_proc:
+        mov     cx, 1
+        mov     dx, offset support_line+9
+        call    file_write_proc
+        ret
 end start
