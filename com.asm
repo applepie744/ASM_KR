@@ -716,7 +716,21 @@ start:
         JMP     word ptr [bx]
         JMP     word ptr gs:[si]
         JMP     word ptr [di]
-        ;
+ 
+        ;??????? 66?
+        JMP     dword ptr [bx+si]
+        JMP     dword ptr gs:[bx+di]
+        JMP     dword ptr [bp+si]
+        JMP     dword ptr [bp+di]
+        JMP     dword ptr [bx]
+        JMP     dword ptr gs:[si]
+        JMP     dword ptr [di]
         
+        JMP     dword ptr ds:[10h] ;write DS-auto
+        JMP     word ptr cs:[10h]
+        JMP     word ptr es:[10h]
+        JMP     word ptr ss:[10h]
+        JMP     word ptr fs:[10h]
+        JMP     word ptr gs:[10h]
         DAS
 end start
