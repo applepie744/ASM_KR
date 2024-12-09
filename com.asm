@@ -671,7 +671,25 @@ start:
         BTC     dword ptr [bx+1060h], esp
         BTC     dword ptr [bx+1060h], ebp
         BTC     dword ptr [bx+1060h], esi
-        BTC     dword ptr [bx+1060h], edi
+        BTC     dword ptr [bx+0F000h], edi
+        
+        BTC     word ptr ds:[0016h], ax
+        BTC     word ptr cs:[0016h], cx
+        BTC     word ptr ss:[0016h], dx
+        BTC     word ptr fs:[0016h], bx
+        BTC     word ptr gs:[0016h], sp
+        BTC     word ptr ds:[0016h], bp
+        BTC     word ptr cs:[0016h], si
+        BTC     word ptr ss:[0016h], di
+        
+        BTC     dword ptr fs:[0016h], eax
+        BTC     dword ptr gs:[0016h], ecx
+        BTC     dword ptr fs:[0016h], edx
+        BTC     dword ptr gs:[0016h], ebx
+        BTC     dword ptr fs:[0016h], esp
+        BTC     dword ptr gs:[0016h], ebp
+        BTC     dword ptr fs:[0016h], esi
+        BTC     dword ptr gs:[0016h], edi
         
         JMP     ax
         JMP     cx

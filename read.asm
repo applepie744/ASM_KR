@@ -176,7 +176,7 @@ wr_seg_cx:
         jmp     next_push2
 next_push1:
         cmp     ax, 65h
-        jne     exitt_push;next_push2
+        jne     exitt_push
         push    ax
         jmp     exitt_push
 next_push2:
@@ -198,7 +198,6 @@ wr_seg_bx:
 l:
         mov     [len], ax
 wr_seg:        
-        mov     bx, [descr]
         mov     cx, 9
         mov     dx, offset support_line+11
         call    file_write_proc
@@ -435,9 +434,9 @@ operand_mem:
         je      b32setka
         push    dx
         sal     al, 1
-        js      mod01                         ;mod    01
-        jc      mod10                        ;mod    10
-mod00:                                            ;mod    00 
+        js      mod01                        
+        jc      mod10                        
+mod00:                                            
         sal     al, 4
         bt      ax, 7        
         jc      no_sib
@@ -499,7 +498,8 @@ w_di9:
 n_sib_bx_num:
         bt      ax, 5
         jc      w_bx9
-        ;num16
+        call    num16
+        mov     [res_name], 16h        
         jmp     close_skobka
 w_bx9:
         call    op_bx
@@ -538,6 +538,7 @@ b32setka:
         
 file_write_proc:
         mov     ah, 40h
+        mov    bx, [descr]
         int     21h
         ret
 add_e:
