@@ -799,8 +799,6 @@ start:
         BTC     dword ptr [edi], esi
         BTC     dword ptr [edi], edi        
         
-        ;
-        
         ;BTC     word ptr [ebp], ax
         ;BTC     word ptr [ebp], cx
         ;BTC     word ptr [ebp], dx
@@ -836,43 +834,27 @@ start:
         JMP     esi
         JMP     edi
         
-        JMP     word ptr [bx+si]
-        JMP     word ptr gs:[bx+di]
-        JMP     word ptr [bp+si]
-        JMP     word ptr [bp+di]
-        JMP     word ptr [bx]
-        JMP     word ptr gs:[si]
-        JMP     word ptr [di]
- 
-        ;??????? 66?
-        ;JMP     dword ptr [bx+si]
-        ;JMP     dword ptr gs:[bx+di]
-        ;JMP     dword ptr [bp+si]
-        ;JMP     dword ptr [bp+di]
-        ;JMP     dword ptr [bx]
-        ;JMP     dword ptr gs:[si]
-        ;JMP     dword ptr [di]
+        JMP     [bx+si]
+        JMP     [bx+di]
+        JMP     [bp+si]
+        JMP     [bp+di]
+        JMP     [bx]
+        JMP     gs:[si]
+        JMP     [di]
         
-        JMP     word ptr ds:[10h] ;write DS-auto
-        JMP     word ptr cs:[10h]
-        JMP     word ptr es:[10h]
-        JMP     word ptr ss:[10h]
-        JMP     word ptr fs:[10h]
-        JMP     word ptr gs:[10h]
+        JMP     ds:[10h] 
+        JMP     cs:[10h]
+        JMP     es:[10h]
+        JMP     ss:[10h]
+        JMP     fs:[10h]
+        JMP     gs:[10h]
         
-        JMP     word ptr [eax]
-        JMP     word ptr [ecx]
-        JMP     word ptr [edx]
-        JMP     word ptr [ebx]
-        JMP     word ptr [esi]
-        JMP     word ptr [edi]
-        
-        ;JMP     dword ptr [eax]
-        ;JMP     dword ptr [ecx]
-        ;JMP     dword ptr [edx]
-        ;JMP     dword ptr [ebx]
-        ;JMP     dword ptr [esi]
-        ;JMP     dword ptr [edi]
-        
+        JMP     [eax]
+        JMP     [ecx]                   
+        JMP     [edx]                   
+        JMP     [ebx]                  
+        JMP     [esi]
+        JMP     [edi]                                                                   
+                                   
         DAS
 end start

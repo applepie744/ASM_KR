@@ -1,4 +1,4 @@
-.model small
+    .model small
     .486
     .stack 100h
     .data
@@ -52,12 +52,13 @@ start:
         jmp     after_exp
 while:
         mov    [res_name], 0h
+        mov    [len], 0h 
         pop    dx
         cmp    sp, 100h
-        jge     after_expe
+        jge    after_expe
         pop    dx
         cmp    sp, 100h
-        jge     after_expe
+        jge    after_expe
         pop    dx
 after_expe:
         mov    sp, 0100h
@@ -140,8 +141,10 @@ st_work_meme:
          jz     st_work_mem
          inc    bp       
 st_work_mem:
+        mov     [len], 0044h
+        call    bp_opredelitel
         cmp     sp, 100h
-        je      skobka0
+        je      wr_seg
         pop     ax
         cmp     sp, 100h
         je      er
@@ -174,10 +177,10 @@ k:
         mov     cx, 1
         mov     dx, offset support_line+10
         call    file_write_proc
-        jmp     skobka0
+        jmp     wr_seg
 p: 
         push    ax
-        jmp     skobka0
+        jmp     wr_seg
 wr_seg_cx:
         cmp     dx, 65h
         jne     next_push1
@@ -204,12 +207,16 @@ wr_seg_bx:
         mov     dx, offset support_line+10
         call    file_write_proc
         xchg    di, ax
+        jmp     wr_seg
 l:
         mov     [len], ax
-wr_seg:        
+wr_seg: 
+        cmp     bp, 3
+        je      j
         mov     cx, 9
         mov     dx, offset support_line+11
         call    file_write_proc
+j:
         mov     dx, offset [len]
         mov     cx, 1
         call    file_write_proc
@@ -218,11 +225,6 @@ wr_seg:
         mov     [len], 3Ah
         call    file_write_proc
         jmp     skobka
-skobka0:
-        mov     bx, [descr]
-        mov     cx, 9
-        mov     dx, offset support_line+11
-        call    file_write_proc
 skobka:                              
         mov     cx, 1
         mov     bx, [descr]
@@ -274,7 +276,9 @@ expi:
         neg     bp
         jmp     exp
 btc_32:
-        mov     bp, 0FFFEh 
+        mov     bp, 0FFFEh
+        cmp     ax, 67h
+        je      b32setka 
 exp:        
         mov     dx, offset register_line
         mov     cx, 1
@@ -439,7 +443,7 @@ dk:
 hhhh:
         jmp     register_exp
 mod01:
-        push     8h
+        push    8h
         jmp     mod00
 mod10:
         push    16h
@@ -552,13 +556,18 @@ m00rm001:
         call    file_write_proc
         jmp     dist_check 
 b32setka:
+        dec     si
         lodsb               
         btr     ax, 3
+        btr     ax, 4
+        btr     ax, 5
+        btr     ax, 6
+        btr     ax, 7
         cmp     al, 4
-        jne     no_SIBb             
-        jmp     close_skobka; optional string
-no_SIBb:
-        jmp     close_skobka
+        je      SIBb        
+        jmp     exp; optional string
+SIBb:
+        jmp     tab; optional
         ;sal     al, 1
         ;js      tab                         ;mod    01
         ;jc      tab                         ;mod    10
@@ -651,8 +660,90 @@ num:
             call    file_write_proc
             ret
 close_skobka_proc:
-        mov     cx, 1
-        mov     dx, offset support_line+9
-        call    file_write_proc
-        ret
+            mov     cx, 1
+            mov     dx, offset support_line+9
+            call    file_write_proc
+            ret
+            
+bp_opredelitel:
+            xor     ax, ax
+            dec     si
+            lodsb   
+            mov     di, ax
+            btr     di, 3
+            btr     di, 4
+            btr     di, 5
+            btr     di, 6
+            btr     di, 7 
+            cmp     sp, 00FCh
+            jg      two_push_max
+            jmp     more
+two_push_max: 
+            cmp     sp, 00FEh
+            je      ch_push
+            jmp     bi16 
+ch_push: 
+            pop     dx
+            push    dx
+            cmp     dx, 67h
+            je      bi32
+            jmp     bi16
+more:
+            cmp     sp, 00FAh
+            je      e
+            jl      bi32
+            pop     dx
+            push    dx
+            cmp     dx, 67h
+            je      bi32
+            jmp     bi16
+bi16:       
+            sal     al, 1
+            js      ch_in_reg
+            jmp     mod0x
+ch_in_reg:
+            jc      work16
+            jmp     e
+work16: 
+            mov     ax, di
+            cmp     al, 4
+            je      smena
+            cmp     al, 5
+            jg      e
+            je      smena
+            jmp     e
+mod0x:
+            mov     ax, di
+            cmp     al, 2
+            je      smena
+            cmp     al, 3
+            je      smena
+            jmp     e
+bi32:
+            sal     al, 1
+            js      reg_or_dis32
+            jc      step
+            mov     ax, di
+            cmp     al, 4
+            je      siib_ch
+            jmp     e
+reg_or_dis32:
+            jc      work16
+step:
+            mov     ax, di
+            cmp     al, 4
+            je      siib_ch
+only_five:
+            cmp     al, 5
+            jg      e
+            je      smena
+            jmp     e
+siib_ch:
+            mov     ax, di
+            jmp     only_five 
+smena:
+            mov     [len], 53h
+e:
+            xor     di, di
+            ret
 end start
