@@ -142,7 +142,8 @@ st_work_meme:
          inc    bp       
 st_work_mem:
         mov     [len], 0044h
-        call    bp_opredelitel
+        jmp     bp_opredelitel
+    met:
         cmp     sp, 100h
         je      wr_seg
         pop     ax
@@ -245,6 +246,10 @@ tab:
         je      shift8
         cmp     al, 16h 
         je      shift16
+        lodsb
+        dec     si
+        or      al, al
+        jz      shift8
         jmp     endd
 shift16:
         lodsb
@@ -745,5 +750,5 @@ smena:
             mov     [len], 53h
 e:
             xor     di, di
-            ret
+            jmp     met
 end start

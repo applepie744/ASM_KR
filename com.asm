@@ -762,7 +762,25 @@ start:
         BTC     dword ptr [ebx], ebp
         BTC     dword ptr [ebx], esi
         BTC     dword ptr [ebx], edi
-       
+        
+        BTC     word ptr [ebp], ax
+        BTC     word ptr [ebp], cx
+        BTC     word ptr [ebp], dx
+        BTC     word ptr [ebp], bx
+        BTC     word ptr [ebp], sp
+        BTC     word ptr [ebp], bp
+        BTC     word ptr [ebp], si
+        BTC     word ptr [ebp], di
+        
+        BTC     dword ptr [ebp], eax
+        BTC     dword ptr [ebp], ecx
+        BTC     dword ptr [ebp], edx
+        BTC     dword ptr [ebp], ebx
+        BTC     dword ptr [ebp], esp
+        BTC     dword ptr [ebp], ebp
+        BTC     dword ptr [ebp], esi
+        BTC     dword ptr [ebp], edi
+        
         BTC     word ptr [esi], ax
         BTC     word ptr [esi], cx
         BTC     word ptr [esi], dx
@@ -798,24 +816,7 @@ start:
         BTC     dword ptr [edi], ebp
         BTC     dword ptr [edi], esi
         BTC     dword ptr [edi], edi        
-        
-        ;BTC     word ptr [ebp], ax
-        ;BTC     word ptr [ebp], cx
-        ;BTC     word ptr [ebp], dx
-        ;BTC     word ptr [ebp], bx
-        ;BTC     word ptr [ebp], sp
-        ;BTC     word ptr [ebp], bp
-        ;BTC     word ptr [ebp], si
-        ;BTC     word ptr [ebp], di
-        
-        ;BTC     dword ptr [ebp], eax
-        ;BTC     dword ptr [ebp], ecx
-        ;BTC     dword ptr [ebp], edx
-        ;BTC     dword ptr [ebp], ebx
-        ;BTC     dword ptr [ebp], esp
-        ;BTC     dword ptr [ebp], ebp
-        ;BTC     dword ptr [ebp], esi
-        ;BTC     dword ptr [ebp], edi
+     
         JMP     ax
         JMP     cx
         JMP     dx
