@@ -269,6 +269,11 @@ register_exp:
         jne     operand_check
         jmp     exp
 expi:
+        cmp     bp, 3
+        jne     btc_32
+        neg     bp
+        jmp     exp
+btc_32:
         mov     bp, 0FFFEh 
 exp:        
         mov     dx, offset register_line
@@ -531,8 +536,13 @@ close_skobka:
 i:
         jmp     mee
 btc_32op2:
+        cmp     bp, 0FFFEh
+        jne     btc_w
+        mov     bp, 1
+        jmp     close_skobka
+btc_w: 
         xor     bp, bp
-        jz      close_skobka
+        jmp     close_skobka
 imm8:
         mov     bp, 0FFFFh
         jmp     reg_or_mem

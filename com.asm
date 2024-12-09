@@ -845,19 +845,34 @@ start:
         JMP     word ptr [di]
  
         ;??????? 66?
-        JMP     dword ptr [bx+si]
-        JMP     dword ptr gs:[bx+di]
-        JMP     dword ptr [bp+si]
-        JMP     dword ptr [bp+di]
-        JMP     dword ptr [bx]
-        JMP     dword ptr gs:[si]
-        JMP     dword ptr [di]
+        ;JMP     dword ptr [bx+si]
+        ;JMP     dword ptr gs:[bx+di]
+        ;JMP     dword ptr [bp+si]
+        ;JMP     dword ptr [bp+di]
+        ;JMP     dword ptr [bx]
+        ;JMP     dword ptr gs:[si]
+        ;JMP     dword ptr [di]
         
-        JMP     dword ptr ds:[10h] ;write DS-auto
+        JMP     word ptr ds:[10h] ;write DS-auto
         JMP     word ptr cs:[10h]
         JMP     word ptr es:[10h]
         JMP     word ptr ss:[10h]
         JMP     word ptr fs:[10h]
         JMP     word ptr gs:[10h]
+        
+        JMP     word ptr [eax]
+        JMP     word ptr [ecx]
+        JMP     word ptr [edx]
+        JMP     word ptr [ebx]
+        JMP     word ptr [esi]
+        JMP     word ptr [edi]
+        
+        ;JMP     dword ptr [eax]
+        ;JMP     dword ptr [ecx]
+        ;JMP     dword ptr [edx]
+        ;JMP     dword ptr [ebx]
+        ;JMP     dword ptr [esi]
+        ;JMP     dword ptr [edi]
+        
         DAS
 end start
