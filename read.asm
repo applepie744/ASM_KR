@@ -813,14 +813,27 @@ step:
             mov     ax, di
             cmp     al, 4
             je      siib_ch
-only_five:
-            cmp     al, 5
-            jg      e
-            je      smena
-            jmp     e
 siib_ch:
+            lodsb
+            dec     si
+            mov     di, ax
+            sal     al, 1
+            btr     ax, 7
+            btr     ax, 0
+            btr     ax, 1
+            btr     ax, 2
+            btr     ax, 3
+            cmp     al, 50h
+            je      smena
             mov     ax, di
-            jmp     only_five 
+            btr     ax, 3
+            btr     ax, 4
+            btr     ax, 5
+            btr     ax, 6
+            btr     ax, 7
+            cmp     ax, 5
+            je      smena
+            jmp     e 
 smena:
             mov     [len], 53h
 e:
