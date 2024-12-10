@@ -7,6 +7,7 @@ B dw 1234h
     org 100h   
 start:
 ;exampl 
+
         BTC     ax, ax
         BTC     ax, cx
         BTC     ax, dx
@@ -815,8 +816,746 @@ start:
         BTC     dword ptr [edi], esp
         BTC     dword ptr [edi], ebp
         BTC     dword ptr [edi], esi
-        BTC     dword ptr [edi], edi        
-     
+        BTC     dword ptr [edi], edi
+
+        BTC     word ptr [eax+eax], ax
+        BTC     word ptr [eax+eax], cx
+        BTC     word ptr [eax+eax], dx
+        BTC     word ptr [eax+eax], bx
+        BTC     word ptr [eax+eax], sp
+        BTC     word ptr [eax+eax], bp
+        BTC     word ptr [eax+eax], si
+        BTC     word ptr [eax+eax], di
+        
+        BTC     dword ptr [eax+eax], eax
+        BTC     dword ptr [eax+eax], ecx
+        BTC     dword ptr [eax+eax], edx
+        BTC     dword ptr [eax+eax], ebx
+        BTC     dword ptr [eax+eax], esp
+        BTC     dword ptr [eax+eax], ebp
+        BTC     dword ptr [eax+eax], esi
+        BTC     dword ptr [eax+eax], edi
+        
+        BTC     word ptr [eax*2+eax], ax
+        BTC     word ptr [eax*2+eax], cx
+        BTC     word ptr [eax*2+eax], dx
+        BTC     word ptr [eax*2+eax], bx
+        BTC     word ptr [eax*2+eax], sp
+        BTC     word ptr [eax*2+eax], bp
+        BTC     word ptr [eax*2+eax], si
+        BTC     word ptr [eax*2+eax], di
+        
+        BTC     dword ptr [eax*2+eax], eax
+        BTC     dword ptr [eax*2+eax], ecx
+        BTC     dword ptr [eax*2+eax], edx
+        BTC     dword ptr [eax*2+eax], ebx
+        BTC     dword ptr [eax*2+eax], esp
+        BTC     dword ptr [eax*2+eax], ebp
+        BTC     dword ptr [eax*2+eax], esi
+        BTC     dword ptr [eax*2+eax], edi
+        
+        BTC     word ptr [eax*4+eax], ax
+        BTC     word ptr [eax*4+eax], cx
+        BTC     word ptr [eax*4+eax], dx
+        BTC     word ptr [eax*4+eax], bx
+        BTC     word ptr [eax*4+eax], sp
+        BTC     word ptr [eax*4+eax], bp
+        BTC     word ptr [eax*4+eax], si
+        BTC     word ptr [eax*4+eax], di
+        
+        BTC     dword ptr [eax*4+eax], eax
+        BTC     dword ptr [eax*4+eax], ecx
+        BTC     dword ptr [eax*4+eax], edx
+        BTC     dword ptr [eax*4+eax], ebx
+        BTC     dword ptr [eax*4+eax], esp
+        BTC     dword ptr [eax*4+eax], ebp
+        BTC     dword ptr [eax*4+eax], esi
+        BTC     dword ptr [eax*4+eax], edi
+        
+        BTC     word ptr [eax*8+eax], ax
+        BTC     word ptr [eax*8+eax], cx
+        BTC     word ptr [eax*8+eax], dx
+        BTC     word ptr [eax*8+eax], bx
+        BTC     word ptr [eax*8+eax], sp
+        BTC     word ptr [eax*8+eax], bp
+        BTC     word ptr [eax*8+eax], si
+        BTC     word ptr [eax*8+eax], di
+        
+        BTC     dword ptr [eax*8+eax], eax
+        BTC     dword ptr [eax*8+eax], ecx
+        BTC     dword ptr [eax*8+eax], edx
+        BTC     dword ptr [eax*8+eax], ebx
+        BTC     dword ptr [eax*8+eax], esp
+        BTC     dword ptr [eax*8+eax], ebp
+        BTC     dword ptr [eax*8+eax], esi
+        BTC     dword ptr [eax*8+eax], edi
+        
+        BTC     word ptr [ecx+eax], ax
+        BTC     word ptr [ecx+eax], cx
+        BTC     word ptr [ecx+eax], dx
+        BTC     word ptr [ecx+eax], bx
+        BTC     word ptr [ecx+eax], sp
+        BTC     word ptr [ecx+eax], bp
+        BTC     word ptr [ecx+eax], si
+        BTC     word ptr [ecx+eax], di
+        
+        BTC     dword ptr [ecx+eax], eax
+        BTC     dword ptr [ecx+eax], ecx
+        BTC     dword ptr [ecx+eax], edx
+        BTC     dword ptr [ecx+eax], ebx
+        BTC     dword ptr [ecx+eax], esp
+        BTC     dword ptr [ecx+eax], ebp
+        BTC     dword ptr [ecx+eax], esi
+        BTC     dword ptr [ecx+eax], edi
+        
+        BTC     word ptr [ecx*2+eax], ax
+        BTC     word ptr [ecx*2+eax], cx
+        BTC     word ptr [ecx*2+eax], dx
+        BTC     word ptr [ecx*2+eax], bx
+        BTC     word ptr [ecx*2+eax], sp
+        BTC     word ptr [ecx*2+eax], bp
+        BTC     word ptr [ecx*2+eax], si
+        BTC     word ptr [ecx*2+eax], di
+        
+        BTC     dword ptr [ecx*2+eax], eax
+        BTC     dword ptr [ecx*2+eax], ecx
+        BTC     dword ptr [ecx*2+eax], edx
+        BTC     dword ptr [ecx*2+eax], ebx
+        BTC     dword ptr [ecx*2+eax], esp
+        BTC     dword ptr [ecx*2+eax], ebp
+        BTC     dword ptr [ecx*2+eax], esi
+        BTC     dword ptr [ecx*2+eax], edi
+        
+        BTC     word ptr [ecx*4+eax], ax
+        BTC     word ptr [ecx*4+eax], cx
+        BTC     word ptr [ecx*4+eax], dx
+        BTC     word ptr [ecx*4+eax], bx
+        BTC     word ptr [ecx*4+eax], sp
+        BTC     word ptr [ecx*4+eax], bp
+        BTC     word ptr [ecx*4+eax], si
+        BTC     word ptr [ecx*4+eax], di
+        
+        BTC     dword ptr [ecx*4+eax], eax
+        BTC     dword ptr [ecx*4+eax], ecx
+        BTC     dword ptr [ecx*4+eax], edx
+        BTC     dword ptr [ecx*4+eax], ebx
+        BTC     dword ptr [ecx*4+eax], esp
+        BTC     dword ptr [ecx*4+eax], ebp
+        BTC     dword ptr [ecx*4+eax], esi
+        BTC     dword ptr [ecx*4+eax], edi
+        
+        BTC     word ptr [ecx*8+eax], ax
+        BTC     word ptr [ecx*8+eax], cx
+        BTC     word ptr [ecx*8+eax], dx
+        BTC     word ptr [ecx*8+eax], bx
+        BTC     word ptr [ecx*8+eax], sp
+        BTC     word ptr [ecx*8+eax], bp
+        BTC     word ptr [ecx*8+eax], si
+        BTC     word ptr [ecx*8+eax], di
+        
+        BTC     dword ptr [ecx*8+eax], eax
+        BTC     dword ptr [ecx*8+eax], ecx
+        BTC     dword ptr [ecx*8+eax], edx
+        BTC     dword ptr [ecx*8+eax], ebx
+        BTC     dword ptr [ecx*8+eax], esp
+        BTC     dword ptr [ecx*8+eax], ebp
+        BTC     dword ptr [ecx*8+eax], esi
+        BTC     dword ptr [ecx*8+eax], edi
+        
+        BTC     word ptr [edx+eax], ax
+        BTC     word ptr [edx+eax], cx
+        BTC     word ptr [edx+eax], dx
+        BTC     word ptr [edx+eax], bx
+        BTC     word ptr [edx+eax], sp
+        BTC     word ptr [edx+eax], bp
+        BTC     word ptr [edx+eax], si
+        BTC     word ptr [edx+eax], di
+        
+        BTC     dword ptr [edx+eax], eax
+        BTC     dword ptr [edx+eax], ecx
+        BTC     dword ptr [edx+eax], edx
+        BTC     dword ptr [edx+eax], ebx
+        BTC     dword ptr [edx+eax], esp
+        BTC     dword ptr [edx+eax], ebp
+        BTC     dword ptr [edx+eax], esi
+        BTC     dword ptr [edx+eax], edi
+        
+        BTC     word ptr [edx*2+eax], ax
+        BTC     word ptr [edx*2+eax], cx
+        BTC     word ptr [edx*2+eax], dx
+        BTC     word ptr [edx*2+eax], bx
+        BTC     word ptr [edx*2+eax], sp
+        BTC     word ptr [edx*2+eax], bp
+        BTC     word ptr [edx*2+eax], si
+        BTC     word ptr [edx*2+eax], di
+        
+        BTC     dword ptr [edx*2+eax], eax
+        BTC     dword ptr [edx*2+eax], ecx
+        BTC     dword ptr [edx*2+eax], edx
+        BTC     dword ptr [edx*2+eax], ebx
+        BTC     dword ptr [edx*2+eax], esp
+        BTC     dword ptr [edx*2+eax], ebp
+        BTC     dword ptr [edx*2+eax], esi
+        BTC     dword ptr [edx*2+eax], edi
+        
+        BTC     word ptr [edx*4+eax], ax
+        BTC     word ptr [edx*4+eax], cx
+        BTC     word ptr [edx*4+eax], dx
+        BTC     word ptr [edx*4+eax], bx
+        BTC     word ptr [edx*4+eax], sp
+        BTC     word ptr [edx*4+eax], bp
+        BTC     word ptr [edx*4+eax], si
+        BTC     word ptr [edx*4+eax], di
+        
+        BTC     dword ptr [edx*4+eax], eax
+        BTC     dword ptr [edx*4+eax], ecx
+        BTC     dword ptr [edx*4+eax], edx
+        BTC     dword ptr [edx*4+eax], ebx
+        BTC     dword ptr [edx*4+eax], esp
+        BTC     dword ptr [edx*4+eax], ebp
+        BTC     dword ptr [edx*4+eax], esi
+        BTC     dword ptr [edx*4+eax], edi
+        
+        BTC     word ptr [edx*8+eax], ax
+        BTC     word ptr [edx*8+eax], cx
+        BTC     word ptr [edx*8+eax], dx
+        BTC     word ptr [edx*8+eax], bx
+        BTC     word ptr [edx*8+eax], sp
+        BTC     word ptr [edx*8+eax], bp
+        BTC     word ptr [edx*8+eax], si
+        BTC     word ptr [edx*8+eax], di
+        
+        BTC     dword ptr [edx*8+eax], eax
+        BTC     dword ptr [edx*8+eax], ecx
+        BTC     dword ptr [edx*8+eax], edx
+        BTC     dword ptr [edx*8+eax], ebx
+        BTC     dword ptr [edx*8+eax], esp
+        BTC     dword ptr [edx*8+eax], ebp
+        BTC     dword ptr [edx*8+eax], esi
+        BTC     dword ptr [edx*8+eax], edi
+        
+        BTC     word ptr [ebx+eax], ax
+        BTC     word ptr [ebx+eax], cx
+        BTC     word ptr [ebx+eax], dx
+        BTC     word ptr [ebx+eax], bx
+        BTC     word ptr [ebx+eax], sp
+        BTC     word ptr [ebx+eax], bp
+        BTC     word ptr [ebx+eax], si
+        BTC     word ptr [ebx+eax], di
+        
+        BTC     dword ptr [ebx+eax], eax
+        BTC     dword ptr [ebx+eax], ecx
+        BTC     dword ptr [ebx+eax], edx
+        BTC     dword ptr [ebx+eax], ebx
+        BTC     dword ptr [ebx+eax], esp
+        BTC     dword ptr [ebx+eax], ebp
+        BTC     dword ptr [ebx+eax], esi
+        BTC     dword ptr [ebx+eax], edi
+        
+        BTC     word ptr [ebx*2+eax], ax
+        BTC     word ptr [ebx*2+eax], cx
+        BTC     word ptr [ebx*2+eax], dx
+        BTC     word ptr [ebx*2+eax], bx
+        BTC     word ptr [ebx*2+eax], sp
+        BTC     word ptr [ebx*2+eax], bp
+        BTC     word ptr [ebx*2+eax], si
+        BTC     word ptr [ebx*2+eax], di
+        
+        BTC     dword ptr [ebx*2+eax], eax
+        BTC     dword ptr [ebx*2+eax], ecx
+        BTC     dword ptr [ebx*2+eax], edx
+        BTC     dword ptr [ebx*2+eax], ebx
+        BTC     dword ptr [ebx*2+eax], esp
+        BTC     dword ptr [ebx*2+eax], ebp
+        BTC     dword ptr [ebx*2+eax], esi
+        BTC     dword ptr [ebx*2+eax], edi
+        
+        BTC     word ptr [ebx*4+eax], ax
+        BTC     word ptr [ebx*4+eax], cx
+        BTC     word ptr [ebx*4+eax], dx
+        BTC     word ptr [ebx*4+eax], bx
+        BTC     word ptr [ebx*4+eax], sp
+        BTC     word ptr [ebx*4+eax], bp
+        BTC     word ptr [ebx*4+eax], si
+        BTC     word ptr [ebx*4+eax], di
+        
+        BTC     dword ptr [ebx*4+eax], eax
+        BTC     dword ptr [ebx*4+eax], ecx
+        BTC     dword ptr [ebx*4+eax], edx
+        BTC     dword ptr [ebx*4+eax], ebx
+        BTC     dword ptr [ebx*4+eax], esp
+        BTC     dword ptr [ebx*4+eax], ebp
+        BTC     dword ptr [ebx*4+eax], esi
+        BTC     dword ptr [ebx*4+eax], edi
+        
+        BTC     word ptr [ebx*8+eax], ax
+        BTC     word ptr [ebx*8+eax], cx
+        BTC     word ptr [ebx*8+eax], dx
+        BTC     word ptr [ebx*8+eax], bx
+        BTC     word ptr [ebx*8+eax], sp
+        BTC     word ptr [ebx*8+eax], bp
+        BTC     word ptr [ebx*8+eax], si
+        BTC     word ptr [ebx*8+eax], di
+        
+        BTC     dword ptr [ebx*8+eax], eax
+        BTC     dword ptr [ebx*8+eax], ecx
+        BTC     dword ptr [ebx*8+eax], edx
+        BTC     dword ptr [ebx*8+eax], ebx
+        BTC     dword ptr [ebx*8+eax], esp
+        BTC     dword ptr [ebx*8+eax], ebp
+        BTC     dword ptr [ebx*8+eax], esi
+        BTC     dword ptr [ebx*8+eax], edi
+        
+        BTC     word ptr [ebp+eax], ax
+        BTC     word ptr [ebp+eax], cx
+        BTC     word ptr [ebp+eax], dx
+        BTC     word ptr [ebp+eax], bx
+        BTC     word ptr [ebp+eax], sp
+        BTC     word ptr [ebp+eax], bp
+        BTC     word ptr [ebp+eax], si
+        BTC     word ptr [ebp+eax], di
+        
+        BTC     dword ptr [ebp+eax], eax
+        BTC     dword ptr [ebp+eax], ecx
+        BTC     dword ptr [ebp+eax], edx
+        BTC     dword ptr [ebp+eax], ebx
+        BTC     dword ptr [ebp+eax], esp
+        BTC     dword ptr [ebp+eax], ebp
+        BTC     dword ptr [ebp+eax], esi
+        BTC     dword ptr [ebp+eax], edi
+        
+        BTC     word ptr [ebp*2+eax], ax
+        BTC     word ptr [ebp*2+eax], cx
+        BTC     word ptr [ebp*2+eax], dx
+        BTC     word ptr [ebp*2+eax], bx
+        BTC     word ptr [ebp*2+eax], sp
+        BTC     word ptr [ebp*2+eax], bp
+        BTC     word ptr [ebp*2+eax], si
+        BTC     word ptr [ebp*2+eax], di
+        
+        BTC     dword ptr [ebp*2+eax], eax
+        BTC     dword ptr [ebp*2+eax], ecx
+        BTC     dword ptr [ebp*2+eax], edx
+        BTC     dword ptr [ebp*2+eax], ebx
+        BTC     dword ptr [ebp*2+eax], esp
+        BTC     dword ptr [ebp*2+eax], ebp
+        BTC     dword ptr [ebp*2+eax], esi
+        BTC     dword ptr [ebp*2+eax], edi
+        
+        BTC     word ptr [ebp*4+eax], ax
+        BTC     word ptr [ebp*4+eax], cx
+        BTC     word ptr [ebp*4+eax], dx
+        BTC     word ptr [ebp*4+eax], bx
+        BTC     word ptr [ebp*4+eax], sp
+        BTC     word ptr [ebp*4+eax], bp
+        BTC     word ptr [ebp*4+eax], si
+        BTC     word ptr [ebp*4+eax], di
+        
+        BTC     dword ptr [ebp*4+eax], eax
+        BTC     dword ptr [ebp*4+eax], ecx
+        BTC     dword ptr [ebp*4+eax], edx
+        BTC     dword ptr [ebp*4+eax], ebx
+        BTC     dword ptr [ebp*4+eax], esp
+        BTC     dword ptr [ebp*4+eax], ebp
+        BTC     dword ptr [ebp*4+eax], esi
+        BTC     dword ptr [ebp*4+eax], edi
+        
+        BTC     word ptr [ebp*8+eax], ax
+        BTC     word ptr [ebp*8+eax], cx
+        BTC     word ptr [ebp*8+eax], dx
+        BTC     word ptr [ebp*8+eax], bx
+        BTC     word ptr [ebp*8+eax], sp
+        BTC     word ptr [ebp*8+eax], bp
+        BTC     word ptr [ebp*8+eax], si
+        BTC     word ptr [ebp*8+eax], di
+        
+        BTC     dword ptr [ebp*8+eax], eax
+        BTC     dword ptr [ebp*8+eax], ecx
+        BTC     dword ptr [ebp*8+eax], edx
+        BTC     dword ptr [ebp*8+eax], ebx
+        BTC     dword ptr [ebp*8+eax], esp
+        BTC     dword ptr [ebp*8+eax], ebp
+        BTC     dword ptr [ebp*8+eax], esi
+        BTC     dword ptr [ebp*8+eax], edi
+        
+        BTC     word ptr [esi+eax], ax
+        BTC     word ptr [esi+eax], cx
+        BTC     word ptr [esi+eax], dx
+        BTC     word ptr [esi+eax], bx
+        BTC     word ptr [esi+eax], sp
+        BTC     word ptr [esi+eax], bp
+        BTC     word ptr [esi+eax], si
+        BTC     word ptr [esi+eax], di
+        
+        BTC     dword ptr [esi+eax], eax
+        BTC     dword ptr [esi+eax], ecx
+        BTC     dword ptr [esi+eax], edx
+        BTC     dword ptr [esi+eax], ebx
+        BTC     dword ptr [esi+eax], esp
+        BTC     dword ptr [esi+eax], ebp
+        BTC     dword ptr [esi+eax], esi
+        BTC     dword ptr [esi+eax], edi
+        
+        BTC     word ptr [esi*2+eax], ax
+        BTC     word ptr [esi*2+eax], cx
+        BTC     word ptr [esi*2+eax], dx
+        BTC     word ptr [esi*2+eax], bx
+        BTC     word ptr [esi*2+eax], sp
+        BTC     word ptr [esi*2+eax], bp
+        BTC     word ptr [esi*2+eax], si
+        BTC     word ptr [esi*2+eax], di
+        
+        BTC     dword ptr [esi*2+eax], eax
+        BTC     dword ptr [esi*2+eax], ecx
+        BTC     dword ptr [esi*2+eax], edx
+        BTC     dword ptr [esi*2+eax], ebx
+        BTC     dword ptr [esi*2+eax], esp
+        BTC     dword ptr [esi*2+eax], ebp
+        BTC     dword ptr [esi*2+eax], esi
+        BTC     dword ptr [esi*2+eax], edi
+        
+        BTC     word ptr [esi*4+eax], ax
+        BTC     word ptr [esi*4+eax], cx
+        BTC     word ptr [esi*4+eax], dx
+        BTC     word ptr [esi*4+eax], bx
+        BTC     word ptr [esi*4+eax], sp
+        BTC     word ptr [esi*4+eax], bp
+        BTC     word ptr [esi*4+eax], si
+        BTC     word ptr [esi*4+eax], di
+        
+        BTC     dword ptr [esi*4+eax], eax
+        BTC     dword ptr [esi*4+eax], ecx
+        BTC     dword ptr [esi*4+eax], edx
+        BTC     dword ptr [esi*4+eax], ebx
+        BTC     dword ptr [esi*4+eax], esp
+        BTC     dword ptr [esi*4+eax], ebp
+        BTC     dword ptr [esi*4+eax], esi
+        BTC     dword ptr [esi*4+eax], edi
+        
+        BTC     word ptr [esi*8+eax], ax
+        BTC     word ptr [esi*8+eax], cx
+        BTC     word ptr [esi*8+eax], dx
+        BTC     word ptr [esi*8+eax], bx
+        BTC     word ptr [esi*8+eax], sp
+        BTC     word ptr [esi*8+eax], bp
+        BTC     word ptr [esi*8+eax], si
+        BTC     word ptr [esi*8+eax], di
+        
+        BTC     dword ptr [esi*8+eax], eax
+        BTC     dword ptr [esi*8+eax], ecx
+        BTC     dword ptr [esi*8+eax], edx
+        BTC     dword ptr [esi*8+eax], ebx
+        BTC     dword ptr [esi*8+eax], esp
+        BTC     dword ptr [esi*8+eax], ebp
+        BTC     dword ptr [esi*8+eax], esi
+        BTC     dword ptr [esi*8+eax], edi
+        
+        BTC     word ptr [edi+eax], ax
+        BTC     word ptr [edi+eax], cx
+        BTC     word ptr [edi+eax], dx
+        BTC     word ptr [edi+eax], bx
+        BTC     word ptr [edi+eax], sp
+        BTC     word ptr [edi+eax], bp
+        BTC     word ptr [edi+eax], si
+        BTC     word ptr [edi+eax], di
+        
+        BTC     dword ptr [edi+eax], eax
+        BTC     dword ptr [edi+eax], ecx
+        BTC     dword ptr [edi+eax], edx
+        BTC     dword ptr [edi+eax], ebx
+        BTC     dword ptr [edi+eax], esp
+        BTC     dword ptr [edi+eax], ebp
+        BTC     dword ptr [edi+eax], esi
+        BTC     dword ptr [edi+eax], edi
+        
+        BTC     word ptr [edi*2+eax], ax
+        BTC     word ptr [edi*2+eax], cx
+        BTC     word ptr [edi*2+eax], dx
+        BTC     word ptr [edi*2+eax], bx
+        BTC     word ptr [edi*2+eax], sp
+        BTC     word ptr [edi*2+eax], bp
+        BTC     word ptr [edi*2+eax], si
+        BTC     word ptr [edi*2+eax], di
+        
+        BTC     dword ptr [edi*2+eax], eax
+        BTC     dword ptr [edi*2+eax], ecx
+        BTC     dword ptr [edi*2+eax], edx
+        BTC     dword ptr [edi*2+eax], ebx
+        BTC     dword ptr [edi*2+eax], esp
+        BTC     dword ptr [edi*2+eax], ebp
+        BTC     dword ptr [edi*2+eax], esi
+        BTC     dword ptr [edi*2+eax], edi
+        
+        BTC     word ptr [edi*4+eax], ax
+        BTC     word ptr [edi*4+eax], cx
+        BTC     word ptr [edi*4+eax], dx
+        BTC     word ptr [edi*4+eax], bx
+        BTC     word ptr [edi*4+eax], sp
+        BTC     word ptr [edi*4+eax], bp
+        BTC     word ptr [edi*4+eax], si
+        BTC     word ptr [edi*4+eax], di
+        
+        BTC     dword ptr [edi*4+eax], eax
+        BTC     dword ptr [edi*4+eax], ecx
+        BTC     dword ptr [edi*4+eax], edx
+        BTC     dword ptr [edi*4+eax], ebx
+        BTC     dword ptr [edi*4+eax], esp
+        BTC     dword ptr [edi*4+eax], ebp
+        BTC     dword ptr [edi*4+eax], esi
+        BTC     dword ptr [edi*4+eax], edi
+        
+        BTC     word ptr [edi*8+eax], ax
+        BTC     word ptr [edi*8+eax], cx
+        BTC     word ptr [edi*8+eax], dx
+        BTC     word ptr [edi*8+eax], bx
+        BTC     word ptr [edi*8+eax], sp
+        BTC     word ptr [edi*8+eax], bp
+        BTC     word ptr [edi*8+eax], si
+        BTC     word ptr [edi*8+eax], di
+        
+        BTC     dword ptr [edi*8+eax], eax
+        BTC     dword ptr [edi*8+eax], ecx
+        BTC     dword ptr [edi*8+eax], edx
+        BTC     dword ptr [edi*8+eax], ebx
+        BTC     dword ptr [edi*8+eax], esp
+        BTC     dword ptr [edi*8+eax], ebp
+        BTC     dword ptr [edi*8+eax], esi
+        BTC     dword ptr [edi*8+eax], edi
+        
+        BTC     word ptr [eax+ecx], ax
+        BTC     dword ptr [eax+ecx], edi
+        
+        BTC     word ptr [eax*2+ecx], ax
+        BTC     dword ptr [eax*2+ecx], edi
+        
+        BTC     word ptr [eax*4+ecx], ax
+        BTC     dword ptr [eax*4+ecx], edi
+        
+        BTC     word ptr [eax*8+ecx], ax
+        BTC     dword ptr [eax*8+ecx], edi
+        
+        BTC     word ptr [ecx+ecx], ax
+        BTC     dword ptr [ecx+ecx], edi
+        
+        BTC     word ptr [ecx*2+ecx], ax
+        BTC     dword ptr [ecx*2+ecx], edi
+        
+        BTC     word ptr [ecx*4+ecx], ax
+        BTC     dword ptr [ecx*4+ecx], edi
+        
+        BTC     word ptr [ecx*8+ecx], ax
+        BTC     dword ptr [ecx*8+ecx], edi
+        
+        BTC     word ptr [edx+ecx], ax
+        BTC     dword ptr [edx+ecx], edi
+        
+        BTC     word ptr [edx*2+ecx], ax
+        BTC     dword ptr [edx*2+ecx], edi
+        
+        BTC     word ptr [edx*4+ecx], ax
+        BTC     dword ptr [edx*4+ecx], edi
+        
+        BTC     word ptr [edx*8+ecx], ax
+        BTC     dword ptr [edx*8+ecx], edi
+        
+        BTC     word ptr [ebx+ecx], ax
+        BTC     dword ptr [ebx+ecx], edi
+        
+        BTC     word ptr [ebx*2+ecx], ax
+        BTC     dword ptr [ebx*2+ecx], edi
+        
+        BTC     word ptr [ebx*4+ecx], ax
+        BTC     dword ptr [ebx*4+ecx], edi
+        
+        BTC     word ptr [ebx*8+ecx], ax
+        BTC     dword ptr [ebx*8+ecx], edi
+        
+        BTC     word ptr [ebp+ecx], ax
+        BTC     dword ptr [ebp+ecx], edi
+        
+        BTC     word ptr [ebp*2+ecx], ax
+        BTC     dword ptr [ebp*2+ecx], edi
+        
+        BTC     word ptr [ebp*4+ecx], ax
+        BTC     word ptr [ebp*4+ecx], cx
+        BTC     word ptr [ebp*4+ecx], dx
+        BTC     word ptr [ebp*4+ecx], bx
+        BTC     word ptr [ebp*4+ecx], sp
+        BTC     word ptr [ebp*4+ecx], bp
+        BTC     word ptr [ebp*4+ecx], si
+        BTC     word ptr [ebp*4+ecx], di
+        
+        BTC     dword ptr [ebp*4+ecx], eax
+        BTC     dword ptr [ebp*4+ecx], ecx
+        BTC     dword ptr [ebp*4+ecx], edx
+        BTC     dword ptr [ebp*4+ecx], ebx
+        BTC     dword ptr [ebp*4+ecx], esp
+        BTC     dword ptr [ebp*4+ecx], ebp
+        BTC     dword ptr [ebp*4+ecx], esi
+        BTC     dword ptr [ebp*4+ecx], edi
+       
+        BTC     word ptr [ebp*8+ecx], ax
+        BTC     word ptr [ebp*8+ecx], cx
+        BTC     word ptr [ebp*8+ecx], dx
+        BTC     word ptr [ebp*8+ecx], bx
+        BTC     word ptr [ebp*8+ecx], sp
+        BTC     word ptr [ebp*8+ecx], bp
+        BTC     word ptr [ebp*8+ecx], si
+        BTC     word ptr [ebp*8+ecx], di
+        
+        BTC     dword ptr [ebp*8+ecx], eax
+        BTC     dword ptr [ebp*8+ecx], ecx
+        BTC     dword ptr [ebp*8+ecx], edx
+        BTC     dword ptr [ebp*8+ecx], ebx
+        BTC     dword ptr [ebp*8+ecx], esp
+        BTC     dword ptr [ebp*8+ecx], ebp
+        BTC     dword ptr [ebp*8+ecx], esi
+        BTC     dword ptr [ebp*8+ecx], edi
+        
+        BTC     word ptr [esi+ecx], ax
+        BTC     word ptr [esi+ecx], cx
+        BTC     word ptr [esi+ecx], dx
+        BTC     word ptr [esi+ecx], bx
+        BTC     word ptr [esi+ecx], sp
+        BTC     word ptr [esi+ecx], bp
+        BTC     word ptr [esi+ecx], si
+        BTC     word ptr [esi+ecx], di
+        
+        BTC     dword ptr [esi+ecx], eax
+        BTC     dword ptr [esi+ecx], ecx
+        BTC     dword ptr [esi+ecx], edx
+        BTC     dword ptr [esi+ecx], ebx
+        BTC     dword ptr [esi+ecx], esp
+        BTC     dword ptr [esi+ecx], ebp
+        BTC     dword ptr [esi+ecx], esi
+        BTC     dword ptr [esi+ecx], edi
+        
+        BTC     word ptr [esi*2+ecx], ax
+        BTC     word ptr [esi*2+ecx], cx
+        BTC     word ptr [esi*2+ecx], dx
+        BTC     word ptr [esi*2+ecx], bx
+        BTC     word ptr [esi*2+ecx], sp
+        BTC     word ptr [esi*2+ecx], bp
+        BTC     word ptr [esi*2+ecx], si
+        BTC     word ptr [esi*2+ecx], di
+        
+        BTC     dword ptr [esi*2+ecx], eax
+        BTC     dword ptr [esi*2+ecx], ecx
+        BTC     dword ptr [esi*2+ecx], edx
+        BTC     dword ptr [esi*2+ecx], ebx
+        BTC     dword ptr [esi*2+ecx], esp
+        BTC     dword ptr [esi*2+ecx], ebp
+        BTC     dword ptr [esi*2+ecx], esi
+        BTC     dword ptr [esi*2+ecx], edi
+        
+        BTC     word ptr [esi*4+ecx], ax
+        BTC     word ptr [esi*4+ecx], cx
+        BTC     word ptr [esi*4+ecx], dx
+        BTC     word ptr [esi*4+ecx], bx
+        BTC     word ptr [esi*4+ecx], sp
+        BTC     word ptr [esi*4+ecx], bp
+        BTC     word ptr [esi*4+ecx], si
+        BTC     word ptr [esi*4+ecx], di
+        
+        BTC     dword ptr [esi*4+ecx], eax
+        BTC     dword ptr [esi*4+ecx], ecx
+        BTC     dword ptr [esi*4+ecx], edx
+        BTC     dword ptr [esi*4+ecx], ebx
+        BTC     dword ptr [esi*4+ecx], esp
+        BTC     dword ptr [esi*4+ecx], ebp
+        BTC     dword ptr [esi*4+ecx], esi
+        BTC     dword ptr [esi*4+ecx], edi
+        
+        BTC     word ptr [esi*8+ecx], ax
+        BTC     word ptr [esi*8+ecx], cx
+        BTC     word ptr [esi*8+ecx], dx
+        BTC     word ptr [esi*8+ecx], bx
+        BTC     word ptr [esi*8+ecx], sp
+        BTC     word ptr [esi*8+ecx], bp
+        BTC     word ptr [esi*8+ecx], si
+        BTC     word ptr [esi*8+ecx], di
+        
+        BTC     dword ptr [esi*8+ecx], eax
+        BTC     dword ptr [esi*8+ecx], ecx
+        BTC     dword ptr [esi*8+ecx], edx
+        BTC     dword ptr [esi*8+ecx], ebx
+        BTC     dword ptr [esi*8+ecx], esp
+        BTC     dword ptr [esi*8+ecx], ebp
+        BTC     dword ptr [esi*8+ecx], esi
+        BTC     dword ptr [esi*8+ecx], edi
+        
+        BTC     word ptr [edi+ecx], ax
+        BTC     word ptr [edi+ecx], cx
+        BTC     word ptr [edi+ecx], dx
+        BTC     word ptr [edi+ecx], bx
+        BTC     word ptr [edi+ecx], sp
+        BTC     word ptr [edi+ecx], bp
+        BTC     word ptr [edi+ecx], si
+        BTC     word ptr [edi+ecx], di
+        
+        BTC     dword ptr [edi+ecx], eax
+        BTC     dword ptr [edi+ecx], ecx
+        BTC     dword ptr [edi+ecx], edx
+        BTC     dword ptr [edi+ecx], ebx
+        BTC     dword ptr [edi+ecx], esp
+        BTC     dword ptr [edi+ecx], ebp
+        BTC     dword ptr [edi+ecx], esi
+        BTC     dword ptr [edi+ecx], edi
+        
+        BTC     word ptr [edi*2+ecx], ax
+        BTC     word ptr [edi*2+ecx], cx
+        BTC     word ptr [edi*2+ecx], dx
+        BTC     word ptr [edi*2+ecx], bx
+        BTC     word ptr [edi*2+ecx], sp
+        BTC     word ptr [edi*2+ecx], bp
+        BTC     word ptr [edi*2+ecx], si
+        BTC     word ptr [edi*2+ecx], di
+        
+        BTC     dword ptr [edi*2+ecx], eax
+        BTC     dword ptr [edi*2+ecx], ecx
+        BTC     dword ptr [edi*2+ecx], edx
+        BTC     dword ptr [edi*2+ecx], ebx
+        BTC     dword ptr [edi*2+ecx], esp
+        BTC     dword ptr [edi*2+ecx], ebp
+        BTC     dword ptr [edi*2+ecx], esi
+        BTC     dword ptr [edi*2+ecx], edi
+        
+        BTC     word ptr [edi*4+ecx], ax
+        BTC     word ptr [edi*4+ecx], cx
+        BTC     word ptr [edi*4+ecx], dx
+        BTC     word ptr [edi*4+ecx], bx
+        BTC     word ptr [edi*4+ecx], sp
+        BTC     word ptr [edi*4+ecx], bp
+        BTC     word ptr [edi*4+ecx], si
+        BTC     word ptr [edi*4+ecx], di
+        
+        BTC     dword ptr [edi*4+ecx], eax
+        BTC     dword ptr [edi*4+ecx], ecx
+        BTC     dword ptr [edi*4+ecx], edx
+        BTC     dword ptr [edi*4+ecx], ebx
+        BTC     dword ptr [edi*4+ecx], esp
+        BTC     dword ptr [edi*4+ecx], ebp
+        BTC     dword ptr [edi*4+ecx], esi
+        BTC     dword ptr [edi*4+ecx], edi
+        
+        BTC     word ptr [edi*8+ecx], ax
+        BTC     word ptr [edi*8+ecx], cx
+        BTC     word ptr [edi*8+ecx], dx
+        BTC     word ptr [edi*8+ecx], bx
+        BTC     word ptr [edi*8+ecx], sp
+        BTC     word ptr [edi*8+ecx], bp
+        BTC     word ptr [edi*8+ecx], si
+        BTC     word ptr [edi*8+ecx], di
+        
+        BTC     dword ptr [edi*8+ecx], eax
+        BTC     dword ptr [edi*8+ecx], ecx
+        BTC     dword ptr [edi*8+ecx], edx
+        BTC     dword ptr [edi*8+ecx], ebx
+        BTC     dword ptr [edi*8+ecx], esp
+        BTC     dword ptr [edi*8+ecx], ebp
+        BTC     dword ptr [edi*8+ecx], esi
+        BTC     dword ptr [edi*8+ecx], edi
+        
         JMP     ax
         JMP     cx
         JMP     dx

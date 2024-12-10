@@ -5,7 +5,7 @@
 res_name        db  'result.txt', 0
 register_line   db  'eaxcxdxbxspbpsidi, ', 0
 command_line    db  'BTC JMP DAS', 13, 10
-support_line    db  '[*2*4*8+-]dword ptr ', 13, 10
+support_line    db  '[*2 4 8+-]dword ptr ', 13, 10
 file_name       db  'com.com'
 len             dw  ?
     .data?
@@ -52,7 +52,6 @@ start:
         jmp     after_exp
 while:
         mov    [res_name], 0h
-        mov    [len], 0h 
         pop    dx
         cmp    sp, 100h
         jge    after_expe
@@ -242,6 +241,12 @@ tab:
         mov     dx, offset [command_line+11]
         call    file_write_proc
         mov     al, [res_name]
+        mov     cx, [len]
+        mov     [len], 0h
+        cmp     cl, 8
+        jne     end_dis
+        lodsb     
+end_dis:       
         cmp     al, 8h 
         je      shift8
         cmp     al, 16h 
@@ -254,6 +259,8 @@ tab:
 shift16:
         lodsb
 shift8:
+        xor    al, cl
+        jz     Sibend
         lodsb
 endd:
         jmp     while                     
@@ -356,6 +363,7 @@ b4:
         jmp     write_op
 operand_2:
         sar     ax, 3
+SIBoperand_2:
         btr     ax, 4
         btr     ax, 3
         bt      ax, 0
@@ -439,6 +447,9 @@ mee:
         xor     di, di
         call    num8
         jmp     tab
+Sibend:
+       lodsb
+       jmp      tab
 dk:
         pop     dx
         push    dx
@@ -550,6 +561,11 @@ btc_32op2:
         mov     bp, 1
         jmp     close_skobka
 btc_w: 
+        cmp     bp, 100h
+        jne     s
+        mov     bp, 1
+        
+s:
         xor     bp, bp
         jmp     close_skobka
 imm8:
@@ -572,20 +588,79 @@ b32setka:
         je      SIBb        
         jmp     exp; optional string
 SIBb:
-        jmp     tab; optional
-        ;sal     al, 1
-        ;js      tab                         ;mod    01
-        ;jc      tab                         ;mod    10
-                                            ;mod    00 
-        ;sal     al, 4
-        ;bt      ax, 7 
-        ;jmp     tab
+        xor     di, di
+        call    add_e
+        inc     cx
+        lodsb
+        sal     al, 1
+        jc      Smod10_11
+        jns     Sop1
+        mov     di, 2
+        jmp     Sop1
+Smod11:
+        mov     di, 8
+        jmp     Sop1
+Smod10_11:
+        js      Smod11
+                             ;scale 4
+        mov     di, 4
+Sop1:         
+        sal     al, 1
+        bt      ax, 7
+        jc      index1xx
+        bt      ax, 6
+        jc      index_01x
+        bt      ax, 5
+        jnc     ind_000
+                                ;index 001 
+        call    op_cx
+index_wr:
+        call    file_write_proc
+        call    send_index 
+        call    add_plus_symb 
+        jmp     base
+ind_000:
+        call    op_ax
+        jmp     index_wr
+index_01x:
+        bt      ax, 5
+        jnc     ind_010                                    ;ind_011
+
+        call    op_bx
+        jmp     index_wr
+ind_010:
+        call    op_dx
+        jmp     index_wr
+index1xx:
+        bt      ax, 6
+        jc      index11x
+      ;INDEX101 -> ind_100 NONE
+        call    op_bp
+        jmp     index_wr
+index11x:
+        bt      ax, 5
+        jc      index111
+        call    op_si
+        jmp     index_wr
+index111:
+        call    op_di
+        jmp     index_wr
         
-        
+base:
+        call    add_e
+        mov     bp, 0FFFeh
+        dec     si
+        lodsb
+        dec     si
+        btr     ax, 7
+        btr     ax, 6
+        btr     ax, 5
+        mov     [len], 8h
+        jmp     SIBoperand_2        
         
 file_write_proc:
         mov     ah, 40h
-        mov    bx, [descr]
+        mov     bx, [descr]
         int     21h
         ret
 add_e:
@@ -751,4 +826,21 @@ smena:
 e:
             xor     di, di
             jmp     met
+send_index:
+            or      di, di
+            jz      stop
+            mov     cx, 1
+            mov     dx, offset support_line+1
+            call    file_write_proc
+            cmp     di, 9
+            jle     ii
+            add     di, 9
+ii:       
+            add     di, 30h
+            mov     [len], di
+            mov     dx, offset [len]
+            xor     di, di
+            call    file_write_proc
+stop:   
+            ret
 end start
