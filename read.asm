@@ -788,6 +788,7 @@ work16:
             mov     ax, di
             cmp     al, 4
             je      smena
+five:            
             cmp     al, 5
             jg      e
             je      smena
@@ -813,6 +814,7 @@ step:
             mov     ax, di
             cmp     al, 4
             je      siib_ch
+            jmp     five
 siib_ch:
             lodsb
             dec     si
