@@ -130,14 +130,13 @@ imm8:
         mov     di, 100h
         jmp     reg_or_mem
 jmp_check:
-        mov     cx, 4
-        mov     dx, offset command_line+4
-        call    file_write_proc
         dec     si
         lodsb
         cmp     al, 0FFh
         jne     other_jumping
-                                           ; work with FF (simple or far)
+        mov     cx, 4
+        mov     dx, offset command_line+4
+        call    file_write_proc
         mov     bp, 2
         jmp     reg_or_mem
 other_jumping:
@@ -146,30 +145,42 @@ other_jumping:
         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
         jmp     after_exp;tab; EB/E9 
 jumping_db:
-        pop     di
-        push    di
-        cmp     di, 66h
-        jne     simple_EA_jmp1
-        add     si, 2
-simple_EA_jmp1:
-        add     si, 2
-        call    num16
-        mov     [len], 3Ah
         mov     cx, 1
-        mov     dx, offset [len]
+        mov     [file_name], 64h
+        mov     dx, offset [file_name]
         call    file_write_proc
-        mov     [len], 0
-        sub     si, 2
-        call    num16
+        mov     [file_name], 62h
+        mov     dx, offset [file_name]
+        call    file_write_proc
+        mov     [file_name], 32
+        mov     dx, offset [file_name]
+        call    file_write_proc
         pop     di
         push    di
         cmp     di, 66h
-        jne     simple_EA_jmp2
-        sub     si, 2
-        call    num16
-        add     si, 2
-simple_EA_jmp2:
-        add     si, 4
+        jne     simple_EA_jmp
+        mov     cx, 1
+        mov     [file_name], 36h
+        mov     dx, offset [file_name]
+        call    file_write_proc
+        call    file_write_proc
+        dec     si
+        mov     cx, 7
+        jmp     jmpp
+simple_EA_jmp:
+        dec     si
+        mov     cx, 5
+        push    cx
+        jmp     jmp_no_exp
+jmpp:   
+        push    cx
+        mov     cx, 2
+        call    add_db_razdel
+jmp_no_exp:
+        call    num8    
+        pop     cx
+        loop    jmpp
+        call    add_h
         jmp     tab       
 reg_or_mem:
         lodsb
@@ -931,5 +942,11 @@ add_h:
             mov     [file_name], 68h
             mov     dx, offset [file_name] 
             call    file_write_proc 
+            ret
+add_db_razdel:
+            call    add_h
+            mov     cx, 2
+            mov     dx, offset register_line+17
+            call    file_write_proc
             ret  
 end start
