@@ -49,38 +49,36 @@ start:
         mov     [descr], ax
         
         mov     SI, offset buff
-        jmp     after_exp
+        mov     [res_name], 0
 while:
-        mov    [res_name], 0h
         pop    dx
         cmp    sp, 100h
         jge    after_expe
         pop    dx
         cmp    sp, 100h
-        jge    after_expe
+        je     after_expe
         pop    dx
 after_expe:
         mov    sp, 0100h
+        xor     di, di; ?????
 after_exp:
-        xor     di, di
         lodsb  
         or      al, al                      
         jz      exit                        
         cmp     al, 2Fh
-        jne     exp_check_reg
+        jne     exp_or_command
         mov     cx, 5
-        mov     bx, [descr]
         mov     dx, offset [command_line+8]
         call    file_write_proc
-        jmp     while
+        jmp     while        
 exit:
         mov     ah, 4ch
         int     21h
-exp_check_reg:
+exp_or_command:
         cmp     al, 66h
         jl      dop_check
         jne     exp_check_67
-        push    65h
+        push    66h
         jmp     after_exp
 exp_check_67:
         cmp     al, 67h
@@ -122,94 +120,92 @@ seg_36:
          jmp    after_exp
 btc_check:
         mov     cx, 4
-        mov     bx, [descr]
         mov     dx, offset command_line
         call    file_write_proc
         lodsb
         xor     al, 0BBh
-        jnz     imm8                                  ;work with rm16/imm8 (rm32/imm8)    /BTC
+        jnz     imm8                     
+        jmp     reg_or_mem
+imm8:
+        mov     di, 100h
+        jmp     reg_or_mem
+jmp_check:
+        mov     cx, 4
+        mov     dx, offset command_line+4
+        call    file_write_proc
+        dec     si
+        lodsb
+        cmp     al, 0FFh
+        jne     after_exp;tab; EB/EA/E9 
+                                           ; work with FF (simple or far)
+        mov     bp, 2
+        jmp     reg_or_mem
+        
 reg_or_mem:
         lodsb
         sal     al, 1                             
         jns     st_work_meme
-        jc      register_exp
+        jc      operand_1_register       ;- mode 11
 st_work_meme:
-         cmp     bp, 0FFFFh
-         jz      st_work_mem
+         cmp    bp, 0FFFFh
+         jz     st_work_mem
          or     bp, bp
          jz     st_work_mem
          inc    bp       
 st_work_mem:
         mov     [len], 0044h
+        xchg    bx, di
         jmp     bp_opredelitel
-    met:
+met:
+        xchg    bx, di
         cmp     sp, 100h
         je      wr_seg
         pop     ax
         cmp     sp, 100h
-        je      er
+        je      push1exp
         pop     bx
         cmp     sp, 100h
-        je      che
+        je      push2exp
         pop     cx
         pop     dx
         mov     sp, 100h
         cmp     cx, 53h
         je      wr_seg_cx
-che:
+        push    cx     
+push2exp:
         cmp     bx, 53h
         je      wr_seg_bx
         push    bx
-er:     
-        cmp     bx, 65h
-        jne     lll
+        push    ax
+        xchg    ax, bx
+        jmp     check_66        
+push1exp:
+        push    ax
+check_66:
+        cmp     ax, 66h
+        jne     wr_seg
         jmp     dshka
-lll: 
-        cmp     ax, 65h
-        jne     p
-        push    ax
 dshka:
-        cmp     al, 67h
-        jne     k
-        push    ax
-k:
-        mov     bx, [descr]
         mov     cx, 1
         mov     dx, offset support_line+10
         call    file_write_proc
-        jmp     wr_seg
-p: 
-        push    ax
         jmp     wr_seg
 wr_seg_cx:
-        cmp     dx, 65h
-        jne     next_push1
-        push    dx
-        jmp     next_push2
-next_push1:
-        cmp     ax, 65h
-        jne     exitt_push
-        push    ax
-        jmp     exitt_push
-next_push2:
-        cmp     ax, 67h
-        jne     exitt_push
-        push    ax
-exitt_push: 
         mov     [len], bx
-        jmp     wr_seg    
-wr_seg_bx:
-        cmp     cx, 65h
-        jne     l
-        push    cx
-        xchg    di, ax
-        mov     cx, 1
-        mov     dx, offset support_line+10
-        call    file_write_proc
-        xchg    di, ax
+        cmp     dx, 66h
+        jne     et
+        push    dx
+        push    ax
+        jmp     dshka
+et:        
+        push    ax
         jmp     wr_seg
-l:
+wr_seg_bx:
         mov     [len], ax
+        cmp     cx, 66h
+        jne     wr_seg
+        push    cx
+        jmp     dshka
 wr_seg: 
         cmp     bp, 3
         je      j
@@ -224,17 +220,16 @@ j:
         call    file_write_proc
         mov     [len], 3Ah
         call    file_write_proc
-        jmp     skobka
+        mov     [len], 0        
 skobka:                              
         mov     cx, 1
-        mov     bx, [descr]
         mov     dx, offset support_line
         call    file_write_proc
         pop     ax
         push    ax
         cmp     ax, 67h
-        je      expi
-        jmp     operand_mem        
+        je      setka32
+        jmp     setka16
 tab:
         xor     bp, bp
         mov     cx, 2
@@ -242,308 +237,300 @@ tab:
         call    file_write_proc
         mov     al, [res_name]
         mov     cx, [len]
-        mov     [len], 0h
+        mov     [len], 0
+        mov     [res_name], 0
+        cmp     al, 10h
+        je      dis016
+        ;lodsb
+        ;dec     si
         cmp     cl, 8
-        jne     end_dis
-        lodsb     
-end_dis:       
-        cmp     al, 8h 
-        je      shift8
-        cmp     al, 16h 
-        je      shift16
+        jne     nexxt
+        jmp     dis08
+nexxt:     
+        cmp     cl, 10h
+        jne     endd
+dis016:
         lodsb
-        dec     si
-        or      al, al
-        jz      shift8
-        jmp     endd
-shift16:
-        lodsb
-shift8:
-        xor    al, cl
-        jz     Sibend
+dis08:
         lodsb
 endd:
-        jmp     while                     
-jmp_check:
-        mov     cx, 4
-        mov     bx, [descr]
-        mov     dx, offset command_line+4
-        call    file_write_proc
-        dec     si
-        lodsb
-        cmp     al, 0FFh
-        jne     tab; EB/EA/E9 
-        mov     bp, 2
-        jmp     reg_or_mem
-        
-register_exp:        
+        jmp     while         
+operand_1_register:        
         pop     dx
         push    dx
-        cmp     dl, 65h
-        jne     operand_check
-        jmp     exp
-expi:
-        cmp     bp, 3
-        jne     btc_32
-        neg     bp
-        jmp     exp
-btc_32:
-        mov     bp, 0FFFEh
-        cmp     ax, 67h
-        je      b32setka 
-exp:        
-        mov     dx, offset register_line
-        mov     cx, 1
-        mov     bx, [descr]
-        call    file_write_proc
-        cmp     bp, 00FFh
-        je      operand_mem0
-        cmp     bp, 4
-        je      operand_mem
-operand_check:
+        cmp     dl, 66h
+        jne     operand_reg_check
+        call    add_e
+operand_reg_check:
         dec     si
         lodsb
         cmp     bp, 2
-        jz      jj
-        cmp     bp, 0FFFEh
-        je      jj
+        je      check_op2
         or      bp, bp
-        js      jj
         jnz     operand_2
-jj: 
-        shrd    dx, ax, 4
-        jns     op1_other_zn
-        btr     dx, 15
-op1_other_zn:
-        or      dh, dh
-        jnz     a1
+check_op2:
+        btr     ax, 3
+        btr     ax, 4
+        btr     ax, 5
+        btr     ax, 6
+        btr     ax, 7
+for_32bit:
+        or      al, al
+        jnz     choice_op
         call    op_ax
-        jmp     write_op
-a1:
-        cmp     dh, 40h
-        jl      op1_l
-        jne     s1
+        jmp     write_op  
+choice_op:
+        bt      ax, 2
+        jc      reg1xx 
+        bt      ax, 1
+        jc      reg01x    
+        call    op_cx
+        jmp     write_op  
+reg1xx:
+        bt      ax, 1
+        jc      reg11x
+        bt      ax, 0
+        jc      choice_bp
         call    op_sp
-        jmp     write_op
-s1:
-        cmp     dh, 60h
-        jge     b1
+        jmp     write_op  
+choice_bp:
+        cmp     bp, 2000h
+        jl      no_exp67_bp
+        add     [len], 8
+        ;pop     di
+        ;sub     di, 8
+        ;push    di
+no_exp67_bp:
         call    op_bp
-        jmp     write_op
-b1:
-        jne     s2
+        jmp     write_op  
+reg11x:
+        bt      ax, 0
+        jc      choice_di
         call    op_si
-        jmp     write_op
-s2:  
+        jmp     write_op  
+choice_di:
         call    op_di
-        jmp     write_op
-op1_l:
-        cmp     dh, 20h
-        jge     c1
-        call    op_cx
-        jmp     write_op
-c1:
-        cmp     dh, 30h
-        jl      b2
+        jmp     write_op  
+reg01x:
+        bt      ax, 0
+        jc      choice_bx
+        call    op_dx
+        jmp     write_op  
+choice_bx:
         call    op_bx
-        jmp     write_op
-b2:
-        call    op_dx
-        jmp     write_op       
-a2:
-        cmp     al, 0D0h
-        jl      d2
-        call    op_dx
-        jmp     write_op
-d2:
-        call    op_cx
-        jmp     write_op
-b4:  
-        call    op_sp
-        jmp     write_op
+        jmp     write_op  
 operand_2:
         sar     ax, 3
-SIBoperand_2:
-        btr     ax, 4
-        btr     ax, 3
-        bt      ax, 0
-        jc      continue3_1
-        bt      ax, 1
-        jnc     continue3_2
-        cmp     al, 2
-        je      w_dx
-        call    op_si
-        jmp     write_op
-w_dx:
-        call    op_dx
-        jmp     write_op
-continue3_2:
-        or      al, al
-        je      w_ax
-        call    op_sp
-        jmp     write_op
-w_ax:
-        call    op_ax
-        jmp     write_op
-continue3_1:
-        bt      ax, 1
-        jnc     continue4_1
-        cmp     al, 7
-        je      w_di
-        call    op_bx
-        jmp     write_op
-w_di:
-        call    op_di
-        jmp     write_op
-continue4_1:
-        cmp      al, 1
-        je      w_cx
-        call    op_bp
-        jmp     write_op
-w_cx:
-        call    op_cx
-        jmp     write_op
-d3:
-        call    op_si
-        jmp     write_op   
-op_ax:
-        mov     dx, offset register_line+1
-        ret  
-op_cx:
-        mov     dx, offset register_line+3
-        ret
-op_dx:
-        mov     dx, offset register_line+5
-        ret         
-op_bx:
-        mov     dx, offset register_line+7
-        ret
-op_sp:
-        mov     dx, offset register_line+9
-        ret
-op_bp:
-        mov     dx, offset register_line+11
-        ret
-op_si:
-        mov     dx, offset register_line+13
-        ret
-op_di:
-        mov     dx, offset register_line+15
-        ret
+        jmp     check_op2              
 write_op:
         mov     cx, 2
         call    file_write_proc
-mee:
+        cmp     bp, 2000h
+        jl      cross
+        btr     bp, 15
+        btr     bp, 14
+        btr     bp, 13
+        btr     bp, 12               
+        jmp     dist_check
+cross:
         inc     bp
-        or      bp, bp
-        js      btc_32op2 
         cmp     bp, 2
         jge     tab
         mov     cx, 2
         mov     dx, offset register_line+17
         call    file_write_proc
         or      bp, bp
-        jnz     dk
-        xor     di, di
-        call    num8
+        jnz     opr_operand_2
         jmp     tab
-Sibend:
-       lodsb
-       jmp      tab
-dk:
-        pop     dx
-        push    dx
-        cmp     dx, 67h
-        jne     hhhh
-        pop     dx
-hhhh:
-        jmp     register_exp
-mod01:
-        push    8h
-        jmp     mod00
-mod10:
-        push    16h
-        jmp     mod00
-operand_mem0:
-        xor     bp, bp
-operand_mem:
-        dec     si
+opr_operand_2:
+        cmp     sp, 100h
+        jge     dop_check_reg_or_num
+        pop     di
+        cmp     di, 100h
+        jl      dop_check_reg_or_num
+        je      nodis
+imm_op2:
+        cmp     di, 108h
+        je      dis8
+        cmp     di, 110h
+        je      dis16
+        cmp     di, 132h
+        je      dis32
+        cmp     di, 8
+        je      dis8
+        cmp     di, 10h
+        je      dis16
+        cmp     di, 32h
+        je      dis32
         lodsb
+        dec     si
+        ;        ;dis16 - add dis32
+        or      al, al
+        jnz     dis8
+        inc     si
+        jmp     nodis
+dis32:
+        sub     [res_name], 10h
+        lodsw
+dis16:
+        lodsb
+dis8:
+        lodsb
+nodis:
+        call    num8
+        call    add_h
+        jmp     tab
+dop_check_reg_or_num:
+        sub     si, 2
+        lodsb
+        inc     si
+        cmp     al, 0BBh
+        je      op2_reg
+        mov     al, [res_name]
+        or      al, al
+        jnz     po
+        dec     si
+po:
+        jmp     imm_op2   
+op2_reg:     
         pop     dx
-        cmp     dl, 67h
-        je      b32setka
+        pop     cx
+        push    cx
         push    dx
-        sal     al, 1
-        js      mod01                        
-        jc      mod10                        
-mod00:                                            
-        sal     al, 4
-        bt      ax, 7        
-        jc      no_sib
-        bt      ax, 6
-        jc      m00rm1x
-        call    op_bx
-        mov     cx, 2
-        xchg    di, ax
-        call    file_write_proc
-        call    add_plus_symb
-b:
-        xchg    di, ax
-        bt      ax, 5
-        jc      m00rm001
-        mov     cx, 2
-        call    op_si
-        call    file_write_proc
+        cmp     cx, 66h
+        jne     next
+        jmp     enddd
+next:
+        cmp     dx, 66h
+        jne     operand_reg_check
+enddd:
+        call    add_e
+        jmp     operand_reg_check
+mod10:
+        add     di, 10h
+        push    di
+        jmp     mod00
+mod01:
+        add     di, 8h
+        push    di
+        jmp     mod00 
 dist_check:
         pop     di
-        sub     sp, 2
+        push    di
+        cmp     di, 66h
+        jne     k
+        push    di
+        jmp     close_skobka
+k: 
+        or      di, di
+        jz      close_skobka
+        cmp     di, 100h
+        je      close_skobka
+        jl      no_BA
+        btr     di, 8
+no_BA:
+        push    di
         cmp     di, 8h
         jne     next_var
-        call    add_plus_symb
-        xor     di, di
-        call    num8
-        mov     [res_name], 8h
+        lodsb   
         dec     si
-        add     sp, 2
+        or      al, al
+        jz      close_skobka_iskl8
+        call    add_plus
+        call    num8
+        call    add_h
+        dec     si
+        add     [res_name], 8
+close_skobka_iskl8:
         jmp     close_skobka
 next_var:
-        cmp     di, 16h
-        jne     close_skobka
-        call    add_plus_symb
-        xor     di, di
+        cmp     di, 10h
+        jne     check_32
+        call    add_plus
         call    num16
-        mov     [res_name], 16h
-        add     sp, 2
+        call    add_h
+        ;add     [res_name], 10h
+        pop     di
         jmp     close_skobka 
-m00rm1x:
-        call    op_bp
+check_32:
+        cmp     di, 32h
+        jne     close_skobka
+        call    add_plus
+        call    num32
+        call    add_h
+        add     [res_name], 10h
+        pop     di
+        jmp     close_skobka      
+setka16: 
+        dec     si
+        lodsb
+        sal     al, 1
+        js      mod01                        
+        jc      mod10
+mod00:
+        sar     al, 1            ;mod00
+        btr     ax, 3
+        btr     ax, 4
+        btr     ax, 5
+        btr     ax, 6
+        btr     ax, 7
+        or      al, al
+        jnz     choice_mem
         mov     cx, 2
-        xchg    di, ax
+        call    op_bx
         call    file_write_proc
-        call    add_plus_symb
-        jmp     b
-no_sib: 
+        dec     cx
+        call    add_plus
+        inc     cx
+        jmp     choice_m_si
+choice_mem:
+        bt      ax, 2
+        jc      mem16_1xx
+        bt      ax, 1
+        jc      mem16_01x
         mov     cx, 2
-        bt      ax, 6
-        jc      n_sib_bx_num
-        bt      ax, 5
-        jc      w_di9
+        call    op_bx
+        call    file_write_proc
+        dec     cx
+        call    add_plus
+        inc     cx
+        jmp     choice_m_di
+mem16_01x:
+        mov     cx, 2
+        call    op_bp
+        call    file_write_proc
+        dec     cx
+        call    add_plus
+        inc     cx
+        bt      ax, 1
+        jc      choice_m_di
+choice_m_si:
+        mov     cx, 2
         call    op_si
         call    file_write_proc
         jmp     dist_check
-w_di9:
+choice_m_di:
+        mov     cx, 2
         call    op_di
         call    file_write_proc
         jmp     dist_check
-n_sib_bx_num:
-        bt      ax, 5
-        jc      w_bx9
-        call    num16
-        mov     [res_name], 16h        
-        jmp     close_skobka
-w_bx9:
+mem16_1xx:
+        bt      ax, 1
+        jc      mem16_11x
+        bt      ax, 0           
+        jc      choice_m_di
+        jmp     choice_m_si
+mem16_11x:
+        bt      ax, 0
+        jnc     choice_num16
+        mov     cx, 2
         call    op_bx
         call    file_write_proc
+        jmp     dist_check 
+choice_num16:
+        call    num16
+        call    add_h
+        add     [res_name], 10h
         jmp     dist_check
 close_skobka:
         mov     cx, 1
@@ -551,44 +538,39 @@ close_skobka:
         call    file_write_proc
         cmp     bp, 3
         jge     i
-        js      mee
+        js      cross
         xor     bp, bp
 i:
-        jmp     mee
-btc_32op2:
-        cmp     bp, 0FFFEh
-        jne     btc_w
-        mov     bp, 1
-        jmp     close_skobka
-btc_w: 
-        cmp     bp, 100h
-        jne     s
-        mov     bp, 1
-        
-s:
-        xor     bp, bp
-        jmp     close_skobka
-imm8:
-        mov     bp, 0FFFFh
-        jmp     reg_or_mem
-m00rm001:
-        mov     cx, 2
-        call    op_di
-        call    file_write_proc
-        jmp     dist_check 
-b32setka:
+        jmp     cross
+mod_m_10:
+        add     di, 32h
+        push    di
+        jmp     mod_m_00            
+mod_m_01:
+        add     di, 8
+        push    di
+        jmp     mod_m_00
+setka32:        
         dec     si
-        lodsb               
+        lodsb
+        sal     al, 1
+        jc      mod_m_10
+        js      mod_m_01
+mod_m_00:
+        sar     al, 1
         btr     ax, 3
         btr     ax, 4
         btr     ax, 5
         btr     ax, 6
         btr     ax, 7
         cmp     al, 4
-        je      SIBb        
-        jmp     exp; optional string
+        je      SIBb
+        push    ax
+        call    add_e
+        pop     ax
+        add     bp, 2000h
+        jmp     for_32bit
 SIBb:
-        xor     di, di
         call    add_e
         inc     cx
         lodsb
@@ -617,7 +599,7 @@ Sop1:
 index_wr:
         call    file_write_proc
         call    send_index 
-        call    add_plus_symb 
+        call    add_plus
         jmp     base
 ind_000:
         call    op_ax
@@ -634,7 +616,6 @@ ind_010:
 index1xx:
         bt      ax, 6
         jc      index11x
-      ;INDEX101 -> ind_100 NONE
         call    op_bp
         jmp     index_wr
 index11x:
@@ -648,107 +629,88 @@ index111:
         
 base:
         call    add_e
-        mov     bp, 0FFFeh
         dec     si
         lodsb
         dec     si
-        btr     ax, 7
-        btr     ax, 6
-        btr     ax, 5
-        mov     [len], 8h
-        jmp     SIBoperand_2        
+        mov     [len], 8
+        add     bp, 2000h        
+        jmp     check_op2
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
         
+        
+        
+        
+        
+        
+add_plus:
+        mov     cx, 1
+        mov     dx, offset support_line+7
+        call    file_write_proc
+        ret               
+op_ax:
+        mov     dx, offset register_line+1
+        ret  
+op_cx:
+        mov     dx, offset register_line+3
+        ret
+op_dx:
+        mov     dx, offset register_line+5
+        ret         
+op_bx:
+        mov     dx, offset register_line+7
+        ret
+op_sp:
+        mov     dx, offset register_line+9
+        ret
+op_bp:
+        mov     dx, offset register_line+11
+        ret
+op_si:
+        mov     dx, offset register_line+13
+        ret
+op_di:
+        mov     dx, offset register_line+15
+        ret
+         
 file_write_proc:
         mov     ah, 40h
         mov     bx, [descr]
         int     21h
         ret
-add_e:
-        mov     dx, offset register_line
-        mov     cx, 1
-        mov     bx, [descr]
-        call    file_write_proc
-        ret
-add_plus_symb:
-        mov     cx, 1
-        mov     dx, offset support_line+7
-        call    file_write_proc
-        ret
-num8:
-            lodsb
-            sal     ax, 8
-            
-            xor     di, di
-            mov     cx, 2
-            call    num
-            xor     di, di
-            ret
-            
-num16:
-            xor     di, di
-            lodsw
-            mov     cx, 4
-            call    num
-            xor     di, di
-            sub     si, 2
-            ret
-num:
-        smen:
-            or      di, di
-            jnz     f
-            bt      ax, 15
-            jnc     f
-            bt      ax, 13
-            jnc     f
-            push    ax
-            push    cx
-            mov     cx, 1
-            mov     [file_name], 30h
-            mov     dx, offset [file_name]
-            call    file_write_proc
-            inc     di
-            pop     cx
-            pop     ax
-        f:
-            rol     ax, 4
-            push    ax
-            push    cx
-            btr     ax, 4
-            btr     ax, 5
-            btr     ax, 6
-            btr     ax, 7
-            movzx   ax, al
-            cmp     al, 9
-            jle     ado
-            add     al, 7
-        ado:
-            add     al, 30h
-            mov     [file_name], al
-            mov     cx, 1
-            mov     dx, offset [file_name]
-            call    file_write_proc
-            inc     di
-            pop     cx
-            dec     cx
-            pop     ax
-            or      cx, cx
-            jnz     smen       
-            xor     di, di
-            mov     cx, 1
-            mov     [file_name], 68h
-            mov     dx, offset [file_name] 
-            call    file_write_proc
-            ret
-close_skobka_proc:
-            mov     cx, 1
-            mov     dx, offset support_line+9
-            call    file_write_proc
-            ret
-            
+        
 bp_opredelitel:
             xor     ax, ax
             dec     si
-            lodsb   
+            lodsb
+            cmp     di, 100h
+            jne     c
+            push    di
+c:   
             mov     di, ax
             btr     di, 3
             btr     di, 4
@@ -856,6 +818,90 @@ ii:
             mov     dx, offset [len]
             xor     di, di
             call    file_write_proc
-stop:   
+stop: 
+            ret  
+      
+add_e:
+        mov     dx, offset register_line
+        mov     cx, 1
+        mov     bx, [descr]
+        call    file_write_proc
+        ret
+
+num32:        
+        add     si, 3
+        call    num8
+        sub     si, 2
+        call    num8
+        sub     si, 3
+        call    num16
+        xor     di, di
+        ret
+num8:
+            xor     di, di
+            lodsb
+            sal     ax, 8            
+            xor     di, di
+            mov     cx, 2
+            call    num
+            xor     di, di
             ret
+            
+num16:
+            xor     di, di
+            lodsw
+            mov     cx, 4
+            call    num
+            xor     di, di
+            sub     si, 2
+            ret
+num:
+        smen:
+            or      di, di
+            jnz     f
+            bt      ax, 15
+            jnc     f
+            bt      ax, 13
+            jnc     f
+            push    ax
+            push    cx
+            mov     cx, 1
+            mov     [file_name], 30h
+            mov     dx, offset [file_name]
+            call    file_write_proc
+            inc     di
+            pop     cx
+            pop     ax
+        f:
+            rol     ax, 4
+            push    ax
+            push    cx
+            btr     ax, 4
+            btr     ax, 5
+            btr     ax, 6
+            btr     ax, 7
+            movzx   ax, al
+            cmp     al, 9
+            jle     ado
+            add     al, 7
+        ado:
+            add     al, 30h
+            mov     [file_name], al
+            mov     cx, 1
+            mov     dx, offset [file_name]
+            call    file_write_proc
+            inc     di
+            pop     cx
+            dec     cx
+            pop     ax
+            or      cx, cx
+            jnz     smen       
+            xor     di, di
+            ret  
+add_h: 
+            mov     cx, 1
+            mov     [file_name], 68h
+            mov     dx, offset [file_name] 
+            call    file_write_proc 
+            ret  
 end start
