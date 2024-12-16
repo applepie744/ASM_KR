@@ -6,8 +6,7 @@ B dw 1234h
     .code
     org 100h   
 start:
-;exampl 
-
+    ;exampl
         BTC     ax, ax
         BTC     ax, cx
         BTC     ax, dx
@@ -152,7 +151,6 @@ start:
         BTC     edi, esi
         BTC     edi, edi
         
-        BTC     ax, 0FCh
         BTC     ax, 0FCh
         BTC     ax, 0FCh
         BTC     ax, 0FCh
@@ -672,7 +670,7 @@ start:
         BTC     dword ptr [bx+1060h], esp
         BTC     dword ptr [bx+1060h], ebp
         BTC     dword ptr [bx+1060h], esi
-        BTC     dword ptr [bx+0F000h], edi
+        BTC     dword ptr [bx+1060h], edi
         
         BTC     word ptr ds:[0016h], ax
         BTC     word ptr cs:[0016h], cx
@@ -692,7 +690,7 @@ start:
         BTC     dword ptr fs:[0016h], esi
         BTC     dword ptr gs:[0016h], edi
         
-        BTC     word ptr [eax], ax
+        BTC     word ptr [eax], 15h
         BTC     word ptr [eax], cx
         BTC     word ptr [eax], dx
         BTC     word ptr [eax], bx
@@ -827,7 +825,7 @@ start:
         BTC     word ptr [eax+eax], si
         BTC     word ptr [eax+eax], di
         
-        BTC     dword ptr [eax+eax], eax
+        BTC     dword ptr [eax+eax], 15h
         BTC     dword ptr [eax+eax], ecx
         BTC     dword ptr [eax+eax], edx
         BTC     dword ptr [eax+eax], ebx
@@ -1553,8 +1551,8 @@ start:
         BTC     dword ptr [edi*8+ecx], ebx
         BTC     dword ptr [edi*8+ecx], esp
         BTC     dword ptr [edi*8+ecx], ebp
-        BTC     dword ptr [edi*8+ecx], esi
-        BTC     dword ptr [edi*8+ecx], edi
+        BTC     dword ptr [edi*8+ecx+44h], esi
+        BTC     word ptr DS:[ebx+1130h], 15h
         
         JMP     ax
         JMP     cx
@@ -1574,7 +1572,7 @@ start:
         JMP     esi
         JMP     edi
         
-        JMP     [bx+si]
+        JMP     [bx+si+8]
         JMP     [bx+di]
         JMP     [bp+si]
         JMP     [bp+di]
@@ -1587,7 +1585,6 @@ start:
         JMP     es:[10h]
         JMP     ss:[10h]
         JMP     fs:[10h]
-        JMP     gs:[10h]
         
         JMP     [eax]
         JMP     [ecx]                   
@@ -1595,6 +1592,9 @@ start:
         JMP     [ebx]                  
         JMP     [esi]
         JMP     [edi]                                                                   
-                                   
+        
+        JMP     [eax*4+eax]
+        db      66h, 0EAh, 78h, 56h, 34h, 12h, 02h, 01h
+        db      0EAh, 78h, 56h, 34h, 12h
         DAS
 end start

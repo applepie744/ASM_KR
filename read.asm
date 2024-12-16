@@ -136,11 +136,41 @@ jmp_check:
         dec     si
         lodsb
         cmp     al, 0FFh
-        jne     after_exp;tab; EB/EA/E9 
+        jne     other_jumping
                                            ; work with FF (simple or far)
         mov     bp, 2
         jmp     reg_or_mem
-        
+other_jumping:
+        cmp     al, 0EAh
+        je      jumping_db       
+        ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+        jmp     after_exp;tab; EB/E9 
+jumping_db:
+        pop     di
+        push    di
+        cmp     di, 66h
+        jne     simple_EA_jmp1
+        add     si, 2
+simple_EA_jmp1:
+        add     si, 2
+        call    num16
+        mov     [len], 3Ah
+        mov     cx, 1
+        mov     dx, offset [len]
+        call    file_write_proc
+        mov     [len], 0
+        sub     si, 2
+        call    num16
+        pop     di
+        push    di
+        cmp     di, 66h
+        jne     simple_EA_jmp2
+        sub     si, 2
+        call    num16
+        add     si, 2
+simple_EA_jmp2:
+        add     si, 4
+        jmp     tab       
 reg_or_mem:
         lodsb
         sal     al, 1                             
@@ -297,9 +327,6 @@ choice_bp:
         cmp     bp, 2000h
         jl      no_exp67_bp
         add     [len], 8
-        ;pop     di
-        ;sub     di, 8
-        ;push    di
 no_exp67_bp:
         call    op_bp
         jmp     write_op  
@@ -421,7 +448,8 @@ dist_check:
         jne     k
         push    di
         jmp     close_skobka
-k: 
+
+k:        
         or      di, di
         jz      close_skobka
         cmp     di, 100h
