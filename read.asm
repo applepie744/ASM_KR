@@ -139,7 +139,8 @@ jmp_check:
         mov     dx, offset command_line+4
         call    file_write_proc
         mov     bp, 2
-        xchg    di, ax  
+        xchg    di, ax
+        xor     di, di  
         cmp     al, 0FFh
         jne     other_jumping
         jmp     reg_or_mem
@@ -283,8 +284,6 @@ tab:
         mov     [res_name], 0
         cmp     al, 10h
         je      dis016
-        ;lodsb
-        ;dec     si
         cmp     cl, 8
         jne     nexxt
         jmp     dis08
@@ -369,7 +368,8 @@ write_op:
         btr     bp, 15
         btr     bp, 14
         btr     bp, 13
-        btr     bp, 12               
+        btr     bp, 1
+        ;
         jmp     dist_check
 cross:
         inc     bp
@@ -613,6 +613,7 @@ mod_m_00:
 SIBb:
         call    add_e
         inc     cx
+        xor     di, di
         lodsb
         sal     al, 1
         jc      Smod10_11
@@ -846,6 +847,7 @@ e:
 send_index:
             or      di, di
             jz      stop
+            push    di
             mov     cx, 1
             mov     dx, offset support_line+1
             call    file_write_proc
@@ -858,6 +860,9 @@ ii:
             mov     dx, offset [len]
             xor     di, di
             call    file_write_proc
+            pop     cx
+            xor     cl, cl
+            mov     di, cx
 stop: 
             ret  
       
@@ -869,13 +874,14 @@ add_e:
         ret
 
 num32:        
-        add     si, 3
+        add     si, 4
         call    num8
         sub     si, 2
         call    num8
         sub     si, 3
         call    num16
         xor     di, di
+        dec     si
         ret
 num8:
             xor     di, di
