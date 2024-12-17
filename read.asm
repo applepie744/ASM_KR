@@ -359,17 +359,23 @@ choice_bx:
         jmp     write_op  
 operand_2:
         sar     ax, 3
-        jmp     check_op2              
+        jmp     check_op2  
+d_checking_Sib:
+        inc     si
+        jmp     dist_check
 write_op:
         mov     cx, 2
         call    file_write_proc
+ch_32:      
+        cmp     bp, 2050h
+        jg      d_checking_Sib
         cmp     bp, 2000h
         jl      cross
+fix:
         btr     bp, 15
         btr     bp, 14
         btr     bp, 13
-        btr     bp, 1
-        ;
+        btr     bp, 12               
         jmp     dist_check
 cross:
         inc     bp
@@ -476,6 +482,7 @@ no_BA:
         dec     si
         or      al, al
         jz      close_skobka_iskl8
+simpleee_wr_dis8:
         call    add_plus
         call    num8
         call    add_h
@@ -573,6 +580,14 @@ choice_num16:
         add     [res_name], 10h
         jmp     dist_check
 close_skobka:
+        cmp     bp, 3000h
+        jl      li
+        dec     si
+        btr     bp, 12
+        btr     bp, 13
+        btr     bp, 14
+        btr     bp, 15
+li:      
         mov     cx, 1
         mov     dx, offset support_line+9
         call    file_write_proc
@@ -674,7 +689,7 @@ base:
         lodsb
         dec     si
         mov     [len], 8
-        add     bp, 2000h        
+        add     bp, 3000h        
         jmp     check_op2
  
  
@@ -704,9 +719,7 @@ base:
  
         
         
-        
-        
-        
+       
         
 add_plus:
         mov     cx, 1
@@ -874,14 +887,13 @@ add_e:
         ret
 
 num32:        
-        add     si, 4
+        add     si, 3
         call    num8
         sub     si, 2
         call    num8
         sub     si, 3
         call    num16
         xor     di, di
-        dec     si
         ret
 num8:
             xor     di, di
