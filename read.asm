@@ -132,18 +132,19 @@ imm8:
 jmp_check:
         dec     si
         lodsb
-        cmp     al, 0FFh
-        jne     other_jumping
+        cmp     al, 0EAh
+        je      jumping_db
+        xchg    di, ax
         mov     cx, 4
         mov     dx, offset command_line+4
         call    file_write_proc
         mov     bp, 2
+        xchg    di, ax  
+        cmp     al, 0FFh
+        jne     other_jumping
         jmp     reg_or_mem
 other_jumping:
-        cmp     al, 0EAh
-        je      jumping_db       
-        ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-        jmp     after_exp;tab; EB/E9 
+        jmp     after_exp; EB/E9 
 jumping_db:
         mov     cx, 1
         mov     [file_name], 64h
