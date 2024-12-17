@@ -626,6 +626,28 @@ mod_m_00:
         btr     ax, 7
         cmp     al, 4
         je      SIBb
+        cmp     al, 5
+        jne     set_32
+        pop     di
+        push    di
+        cmp     di, 8
+        je      set_32
+        cmp     di, 32h
+        je      set_32
+        cmp     di, 108h
+        je      set_32
+        cmp     di, 132h
+        je      set_32
+        call    num32
+        call    add_h
+        sub     si, 2
+        lodsb
+        inc     si
+        cmp     al, 0BAh
+        jne     close_skobka
+        add     si, 4
+        jmp     close_skobka
+set_32:        
         push    ax
         call    add_e
         pop     ax
