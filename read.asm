@@ -409,7 +409,6 @@ imm_op2:
         je      dis32
         lodsb
         dec     si
-        ;        ;dis16 - add dis32
         or      al, al
         jnz     dis8
         inc     si
@@ -422,6 +421,13 @@ dis16:
 dis8:
         lodsb
 nodis:
+        lodsb
+        or      al, al
+        jnz     write_op2
+        sub     [len], 8
+        inc     si
+write_op2:
+        dec     si
         call    num8
         call    add_h
         jmp     tab
