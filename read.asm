@@ -502,7 +502,7 @@ next_var:
         call    add_plus
         call    num16
         call    add_h
-        ;add     [res_name], 10h
+        add     [res_name], 10h
         pop     di
         jmp     close_skobka 
 check_32:
@@ -511,7 +511,7 @@ check_32:
         call    add_plus
         call    num32
         call    add_h
-        add     [res_name], 10h
+        add     [res_name], 32h
         pop     di
         jmp     close_skobka      
 setka16: 
@@ -726,7 +726,7 @@ base:
         lodsb
         dec     si
         mov     [len], 8
-        add     bp, 3000h        
+        add     bp, 4000h        
         jmp     check_op2
  
  
