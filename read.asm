@@ -145,7 +145,25 @@ jmp_check:
         jne     other_jumping
         jmp     reg_or_mem
 other_jumping:
-        jmp     after_exp; EB/E9 
+        cmp     al, 0E9h
+        je      tab;/E9 
+                                ; EB = rel8
+        lodsb   
+        movsx   ax, al
+        or      ax, ax
+        js      negative_jmp
+        inc     si
+        jmp     jmp_no_nop
+negative_jmp:
+        sub     ax, 2
+jmp_no_nop:
+        add     ax, si
+        sub     ax, 53h         ;correct
+        sub     si, 2
+        mov     [si], ax
+        call    num16
+        add     si, 2
+        jmp     tab
 jumping_db:
         mov     cx, 1
         mov     [file_name], 64h
