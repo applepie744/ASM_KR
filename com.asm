@@ -7,6 +7,21 @@ B dw 1234h
     org 100h   
 start:
     ;exampl
+        jmp     FFF
+FFF:
+        BTC     word ptr [ebp], 34h
+        BTC     word ptr FS:[1111h], 94h
+        BTC     word ptr FS:[1112h], ax
+        BTC     [eax+eax], bx
+        BTC     [esi*8+edi+11h], dx
+        BTC     [esi+11h], cx
+        
+        BTC     word ptr [ebp], cx
+        BTC     word ptr FS:[11111130h], bx
+        BTC     word ptr FS:[11111130h], 94h
+        BTC     [eax+eax], 15h 
+        BTC     [esi*8+edi+11111111h], 15h
+        BTC     [esi+11111111h], 15h
         BTC     ax, ax
         BTC     ax, cx
         BTC     ax, dx
@@ -762,7 +777,7 @@ start:
         BTC     dword ptr [ebx], esi
         BTC     dword ptr [ebx], edi
         
-        BTC     word ptr [ebp], ax
+
         BTC     word ptr [ebp], cx
         BTC     word ptr [ebp], dx
         BTC     word ptr [ebp], bx
@@ -1552,7 +1567,7 @@ start:
         BTC     dword ptr [edi*8+ecx], esp
         BTC     dword ptr [edi*8+ecx], ebp
         BTC     dword ptr [edi*8+ecx+44h], esi
-        BTC     word ptr DS:[ebx+1130h], 15h
+        BTC     word ptr DS:[ebx+11111130h], 15h
         
         JMP     ax
         JMP     cx
@@ -1572,7 +1587,7 @@ start:
         JMP     esi
         JMP     edi
         
-        JMP     [bx+si+8]
+        JMP     [bx+si+34h]
         JMP     [bx+di]
         JMP     [bp+si]
         JMP     [bp+di]
@@ -1593,7 +1608,8 @@ start:
         JMP     [esi]
         JMP     [edi]                                                                   
         
-        JMP     [eax*4+eax]
+        JMP     [eax*8+eax]
+        
         db      66h, 0EAh, 78h, 56h, 34h, 12h, 02h, 01h
         db      0EAh, 78h, 56h, 34h, 12h
         DAS
