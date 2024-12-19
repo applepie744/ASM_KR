@@ -162,7 +162,7 @@ other_jumping:
         mov     dx, offset [len]
         call    file_write_proc        
         pop     ax
-        add     al, 2
+        inc     al
         dec     si
         mov     [si], al
         call    num8
