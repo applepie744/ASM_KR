@@ -145,23 +145,44 @@ jmp_check:
         jne     other_jumping
         jmp     reg_or_mem
 other_jumping:
+        push    ax
+        mov     [len], 24h
+        mov     dx, offset [len]
+        mov     cx, 1
+        call    file_write_proc
+        pop     ax
         cmp     al, 0E9h
-        je      tab;/E9 
+        je      end_opc_jmp            ;/E9  = rel16
                                 ; EB = rel8
-        lodsb   
-        movsx   ax, al
-        or      ax, ax
-        js      negative_jmp
+        lodsb
+        cmp     al, 0FEh
+        je      tab
+        push    ax
+        mov     [len], 2Bh
+        mov     dx, offset [len]
+        call    file_write_proc        
+        pop     ax
+        add     al, 2
+        dec     si
+        mov     [si], al
+        call    num8
+        call    add_h
         inc     si
-        jmp     jmp_no_nop
-negative_jmp:
-        sub     ax, 2
-jmp_no_nop:
-        add     ax, si
-        sub     ax, 53h         ;correct
+        jmp     tab
+end_opc_jmp:
+        lodsw
+        cmp     ax, 00FEh
+        je      tab
+        push    ax
+        mov     [len], 2Bh
+        mov     dx, offset [len]
+        call    file_write_proc        
+        pop     ax
+        add     ax, 2
         sub     si, 2
         mov     [si], ax
         call    num16
+        call    add_h
         add     si, 2
         jmp     tab
 jumping_db:
