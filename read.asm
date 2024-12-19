@@ -178,7 +178,7 @@ end_opc_jmp:
         mov     dx, offset [len]
         call    file_write_proc        
         pop     ax
-        add     ax, 2
+        add     ax, 3
         sub     si, 2
         mov     [si], ax
         call    num16
