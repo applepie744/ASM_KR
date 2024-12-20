@@ -515,7 +515,7 @@ po:
         cmp     al, 8h
         jl      po1
         inc     si
-        sub    [res_name], 8
+        add     [res_name], 8
         jmp     imm_op2
 po1:
         dec     si
@@ -826,7 +826,7 @@ check_iskl_sib:
         sub     si, 4
         or      ax, dx
         jnz     kpp
-        add     [res_name], 32h
+        add     [len], 32h
         add     di, 32h
         push    di
         jmp     close_skobka
