@@ -158,33 +158,54 @@ other_jumping:
         cmp     al, 0FEh
         je      tab
         push    ax
+        or      al, al
+        js      neg_jmp8
         mov     [len], 2Bh
         mov     dx, offset [len]
         call    file_write_proc        
         pop     ax
         inc     al
+write_jmp8:
         dec     si
         mov     [si], al
         call    num8
         call    add_h
         inc     si
         jmp     tab
+neg_jmp8:
+        mov     [len], 2Dh
+        mov     dx, offset [len]
+        call    file_write_proc        
+        pop     ax
+        neg     al
+        sub     ax, 2
+        jmp     write_jmp8
 end_opc_jmp:
         lodsw
         cmp     ax, 00FEh
         je      tab
         push    ax
+        or      ax, ax
+        js      neg_jmp16
         mov     [len], 2Bh
         mov     dx, offset [len]
         call    file_write_proc        
         pop     ax
         add     ax, 3
+write_jmp16:
         sub     si, 2
         mov     [si], ax
         call    num16
         call    add_h
         add     si, 2
         jmp     tab
+neg_jmp16:
+        mov     [len], 2Dh
+        mov     dx, offset [len]
+        call    file_write_proc        
+        pop     ax
+        sub     ax, 5
+        jmp     write_jmp16
 jumping_db:
         mov     cx, 1
         mov     [file_name], 64h
@@ -731,6 +752,11 @@ Sop1:
 index_wr:
         call    file_write_proc
         call    send_index 
+        lodsb
+        dec     si
+        or      al, al
+        jz      check_iskl_sib
+kpp:
         call    add_plus
         jmp     base
 ind_000:
@@ -748,6 +774,7 @@ ind_010:
 index1xx:
         bt      ax, 6
         jc      index11x
+        ;;;;;
         call    op_bp
         jmp     index_wr
 index11x:
@@ -765,10 +792,19 @@ base:
         lodsb
         dec     si
         mov     [len], 8
-        add     bp, 4000h        
+        add     bp, 4000h
         jmp     check_op2
- 
- 
+check_iskl_sib:
+        lodsw
+        xchg    ax, dx
+        lodsw
+        sub     si, 4
+        or      ax, dx
+        jnz     kpp
+        add     [res_name], 32h
+        add     di, 32h
+        push    di
+        jmp     close_skobka
  
  
  
