@@ -342,17 +342,28 @@ tab:
         mov     cx, [len]
         mov     [len], 0
         mov     [res_name], 0
+        cmp     al, 32h
+        je      dis032
         cmp     al, 10h
         je      dis016
-        cmp     cl, 8
+        cmp     al, 8
         jne     nexxt
         jmp     dis08
-nexxt:     
-        cmp     cl, 10h
-        jne     endd
+dis032:
+        lodsw
 dis016:
         lodsb
 dis08:
+        lodsb
+nexxt:     
+        cmp     cl, 10h
+        je      dis016_1
+        cmp     cl, 8
+        jne     endd
+        jmp     dis08_1
+    dis016_1:
+        lodsb
+    dis08_1:
         lodsb
 endd:
         jmp     while         
@@ -500,8 +511,14 @@ dop_check_reg_or_num:
         mov     al, [res_name]
         or      al, al
         jnz     po
-        dec     si
 po:
+        cmp     al, 8h
+        jl      po1
+        inc     si
+        sub    [res_name], 8
+        jmp     imm_op2
+po1:
+        dec     si
         jmp     imm_op2   
 op2_reg:     
         pop     dx
@@ -1087,5 +1104,6 @@ add_db_razdel:
             mov     cx, 2
             mov     dx, offset register_line+17
             call    file_write_proc
-            ret  
+            ret 
+            
 end start
