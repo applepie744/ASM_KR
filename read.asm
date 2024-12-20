@@ -774,7 +774,15 @@ ind_010:
 index1xx:
         bt      ax, 6
         jc      index11x
-        ;;;;;
+        dec     si
+        lodsb
+        cmp     al, 24h
+        jne     kkpp
+        call    op_sp
+        mov     cx, 2
+        call    file_write_proc
+        jmp     close_skobka
+kkpp:
         call    op_bp
         jmp     index_wr
 index11x:
